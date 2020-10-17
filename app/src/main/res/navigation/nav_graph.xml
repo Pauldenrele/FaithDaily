@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.bibleapp.faithdaily.ui.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_HomeFragment_to_calenderFragment"
+            app:destination="@id/calenderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/calenderFragment"
+        android:name="com.bibleapp.faithdaily.ui.CalenderFragment"
+        android:label="CalenderFragment" >
+        <action
+            android:id="@+id/action_calenderFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.bibleapp.faithdaily.ui.FavoriteFragment"
+        android:label="favoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.bibleapp.faithdaily.ui.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>
