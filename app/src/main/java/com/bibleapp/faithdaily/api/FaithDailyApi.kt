@@ -9,6 +9,6 @@ import retrofit2.http.Query
 interface FaithDailyApi {
 
     @GET("/{day}")
-    suspend fun getDailyResponse( @Path("day") days: Int): Response<FaithDailyResponse>
+    suspend fun getDailyResponse(@Path("day") days: Int): Response<FaithDailyResponse>
 
 }
