@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
     tableName = "faithdaily"
 )
 data class FaithDailyResponse(
-    @PrimaryKey(autoGenerate = true)
     val bible_verse: String,
     val daily_message: String,
     val date: String,
+    @PrimaryKey(autoGenerate = true)
     val day: Int,
     val sub_title: String,
     val title: String
