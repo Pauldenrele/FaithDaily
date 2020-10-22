@@ -8,47 +8,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bibleapp.faithdaily.FaithDailyResponse
 import com.bibleapp.faithdaily.R
+import com.bibleapp.faithdaily.ui.HomeFragment
 import kotlinx.android.synthetic.main.item_preview.view.*
 
-class FaithDailyAdapter : RecyclerView.Adapter<FaithDailyAdapter.FaithDailyViewHolder>() {
 
-    inner class FaithDailyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<FaithDailyResponse>() {
-        override fun areItemsTheSame(oldItem: FaithDailyResponse, newItem: FaithDailyResponse): Boolean {
-            return oldItem.date == newItem.date
-        }
 
-        override fun areContentsTheSame(oldItem: FaithDailyResponse, newItem: FaithDailyResponse): Boolean {
-            return oldItem == newItem
-        }
-    }
 
-    val differ = AsyncListDiffer(this, differCallback)
+class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>): RecyclerView.Adapter<FaithDailyAdapter.FaithDailyViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FaithDailyViewHolder {
-        return FaithDailyViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_preview,
-                parent,
-                false
-            )
-        )
-    }
+    inner class FaithDailyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
+        fun bind (faithdaily:FaithDailyResponse){
+            itemView.apply {
+                tvSource.text = faithdaily.date
+                tvTitle.text = faithdaily.title
+                tvDescription.text = faithdaily.daily_message
+                tvPublishedAt.text = faithdaily.bible_verse
+                setOnClickListener {
+                    onItemClickListener?.let { it(faithdaily) }
+                }
 
-    override fun onBindViewHolder(holder: FaithDailyViewHolder, position: Int) {
-        val faithdaily = differ.currentList[position]
-        holder.itemView.apply {
-            tvSource.text = faithdaily.date
-            tvTitle.text = faithdaily.title
-            tvDescription.text = faithdaily.daily_message
-            tvPublishedAt.text = faithdaily.bible_verse
-            setOnClickListener {
-                onItemClickListener?.let { it(faithdaily) }
             }
         }
     }
@@ -58,6 +38,25 @@ class FaithDailyAdapter : RecyclerView.Adapter<FaithDailyAdapter.FaithDailyViewH
     fun setOnItemClickListener(listener: (FaithDailyResponse) -> Unit) {
         onItemClickListener = listener
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FaithDailyViewHolder {
+        return FaithDailyViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.item_preview,
+                parent,
+                false
+            )
+        ) }
+
+    override fun onBindViewHolder(holder: FaithDailyViewHolder, position: Int) {
+        val faithdaily = listOfPosts[position]
+        holder.bind(faithdaily)
+    }
+
+    override fun getItemCount(): Int {
+        return listOfPosts.size
+    }
 }
+
 
 

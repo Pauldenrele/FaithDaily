@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val mainRepository = MainRepo(FaithDailyDatabase(this))
-        val viewModelProviderFactory = MainViewModelProviderFactory(mainRepository)
+        val viewModelProviderFactory = MainViewModelProviderFactory(application , mainRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(MainViewModel::class.java)
 
         bottomNavigationView.setupWithNavController(NavHostFragment.findNavController())

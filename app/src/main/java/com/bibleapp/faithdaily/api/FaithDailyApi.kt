@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface FaithDailyApi {
 
-    @GET("devotional/1")
-    suspend fun getDailyResponse(): Response<homeResponse>
+    @GET("{day}")
+    suspend fun getDailyResponse(@Path("day") day: Int): Response<FaithDailyResponse>
 
 }

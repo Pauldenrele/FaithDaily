@@ -1,5 +1,5 @@
 package com.bibleapp.faithdaily
 
 data class homeResponse(
-    val articles: List<FaithDailyResponse>
+    val faithadailyResponse: List<FaithDailyResponse>
 )
