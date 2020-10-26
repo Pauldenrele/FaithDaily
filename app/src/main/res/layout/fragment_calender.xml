@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CalenderFragment">
+    android:orientation="vertical"
+    tools:context="com.bibleapp.faithdaily.ui.CalenderFragment"
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <com.bibleapp.faithdaily.CustomVerticalCalenderView
+        android:id="@+id/custom_calender_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+        android:layout_height="wrap_content"
+        custom:fromYear= "2014"
+        custom:toYear="2017"/>
+</LinearLayout>
