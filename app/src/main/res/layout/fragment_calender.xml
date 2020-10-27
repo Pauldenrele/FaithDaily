@@ -10,10 +10,9 @@
 
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
-    <com.bibleapp.faithdaily.CustomVerticalCalenderView
+    <com.bibleapp.faithdaily.CustomVerticalCalenderViewJava
         android:id="@+id/custom_calender_view"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         custom:fromYear= "2014"
         custom:toYear="2017"/>

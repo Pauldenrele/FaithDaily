@@ -28,7 +28,7 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
     // current displayed month
     private Calendar currentDate = Calendar.getInstance();
     private RecyclerView mRecyclerVerticalView;
-    private VerticalAdapter.DateSelectionListener mListener;
+    private VerticalAdapterJava.DateSelectionListener mListener;
     private int mFromYear = 2017;
     private int mToYear = 2017;
     private static boolean mRange;
@@ -93,11 +93,11 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
             LinkedHashMap<String, List<Date>> verticalList = new LinkedHashMap<>();
             currentDate.add(Calendar.YEAR, -resetCalenderTo);// reset to previous year
             currentDate.set(Calendar.MONTH, 0);
-            for (int y = 0; y <= yearUpto ; y++) {
+            for (int y = 0; y <= yearUpto; y++) {
                 for (int i = 0; i < 12; i++) {
                     ArrayList<Date> cells = getDatesForMonth();
                     int month = currentDate.get(Calendar.MONTH);
-                    int year =  currentDate.get(Calendar.YEAR);
+                    int year = currentDate.get(Calendar.YEAR);
                     String key = generateKey(month, year);
                     Log.d(TAG, key);
                     verticalList.put(key, cells);
@@ -110,9 +110,10 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
 
     /**
      * Method use to calculate last 6 month from current month
+     *
      * @param lastNoOfMonth last no of month to display
      */
-    public  void updateCalendar(int lastNoOfMonth){
+    public void updateCalendar(int lastNoOfMonth) {
         if (!isInEditMode()) {
             currentDate = Calendar.getInstance();
             LinkedHashMap<String, List<Date>> verticalList = new LinkedHashMap<>();
@@ -120,7 +121,7 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
             for (int i = 0; i <= lastNoOfMonth; i++) {
                 ArrayList<Date> cells = getDatesForMonth();
                 int month = currentDate.get(Calendar.MONTH);
-                int year =  currentDate.get(Calendar.YEAR);
+                int year = currentDate.get(Calendar.YEAR);
                 String key = generateKey(month, year);
                 Log.d(TAG, key);
                 verticalList.put(key, cells);
@@ -131,25 +132,27 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
         }
     }
 
-    public void setDateSelectionColor(int color){
+    public void setDateSelectionColor(int color) {
         mDateSelectionColor = color;
     }
 
-    public static int getmDateSelectionColor(){
+    public static int getmDateSelectionColor() {
         return mDateSelectionColor;
     }
-    public static void setCurrentDateTextColor(int color){
+
+    public static void setCurrentDateTextColor(int color) {
         mCurrentDateColor = color;
     }
 
-    public static int getmCurrentDateColor(){
+    public static int getmCurrentDateColor() {
         return mCurrentDateColor;
     }
-    public void setFromYear(int fromYear){
+
+    public void setFromYear(int fromYear) {
         mFromYear = fromYear;
     }
 
-    public void setToYear(int toYear){
+    public void setToYear(int toYear) {
         mToYear = toYear;
     }
 
@@ -179,23 +182,23 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
         return cells;
     }
 
-    private void updateAdater(LinkedHashMap<String, List<Date>> verticalWrapperList){
-        ((VerticalAdapter) mRecyclerVerticalView.getAdapter()).setData(verticalWrapperList);
+    private void updateAdater(LinkedHashMap<String, List<Date>> verticalWrapperList) {
+        ((VerticalAdapterJava) mRecyclerVerticalView.getAdapter()).setData(verticalWrapperList);
         int positionToScroll = getCurrentYearMonthListPosition(verticalWrapperList);
         mRecyclerVerticalView.scrollToPosition(positionToScroll);
     }
 
-    private int getCurrentYearMonthListPosition(LinkedHashMap<String, List<Date>> verticalWrapperList){
+    private int getCurrentYearMonthListPosition(LinkedHashMap<String, List<Date>> verticalWrapperList) {
         Calendar curentDate = Calendar.getInstance();
         int currentMonth = curentDate.get(Calendar.MONTH);
-        int currentYear =  curentDate.get(Calendar.YEAR);
+        int currentYear = curentDate.get(Calendar.YEAR);
         int i = 0;
         for (Map.Entry<String, List<Date>> stringListEntry : verticalWrapperList.entrySet()) {
             i++;
             String key = stringListEntry.getKey();
             String[] values = key.split("_");
-            int year =  Integer.parseInt(values[0]);
-            int month =  Integer.parseInt(values[1]);
+            int year = Integer.parseInt(values[0]);
+            int month = Integer.parseInt(values[1]);
             if (currentYear == year && currentMonth == month) {
                 return --i;
             }
@@ -203,25 +206,25 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
         return 0;
     }
 
-    public void setListener(VerticalAdapter.DateSelectionListener listener){
+    public void setListener(VerticalAdapterJava.DateSelectionListener listener) {
         mListener = listener;
 
     }
 
-    public static void setRange(boolean isRange){
+    public static void setRange(boolean isRange) {
         mRange = isRange;
     }
 
-    public static boolean isRange(){
+    public static boolean isRange() {
         return mRange;
     }
 
-    public static boolean isSingleClick(){
+    public static boolean isSingleClick() {
         return mIsSingleClick;
 
     }
 
-    public void setRangeByDefault(Date startDateObj, Date endDateObj){
+    public void setRangeByDefault(Date startDateObj, Date endDateObj) {
         Calendar startCalender = Calendar.getInstance();
         startCalender.setTime(startDateObj);
 
@@ -239,7 +242,7 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
         }
     }
 
-    public static void disablePreviousDate(){
+    public static void disablePreviousDate() {
         mDisablePreviousDate = true;
     }
 
@@ -247,7 +250,7 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
         return mDisablePreviousDate;
     }
 
-    public static void setSingleClick(){
+    public static void setSingleClick() {
         mIsSingleClick = true;
     }
 

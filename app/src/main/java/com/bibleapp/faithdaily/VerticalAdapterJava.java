@@ -24,14 +24,14 @@ import java.util.List;
 
 public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJava.Holder> implements CompoundButton.OnCheckedChangeListener {
 
-    private static final String TAG = VerticalAdapter.class.getSimpleName();
+    private static final String TAG = VerticalAdapterJava.class.getSimpleName();
     private final DateSelectionListener mListener;
     private LinkedHashMap<String, List<Date>> mVerticalWrapperDataList;
     public static List<Date> mselectedDateList = new ArrayList<>();
     private List<Calendar> mfromCalender = new ArrayList<>();
 
     public VerticalAdapterJava(LinkedHashMap<String, List<Date>> verticalWrapperList,
-                           DateSelectionListener listener) {
+                               DateSelectionListener listener) {
         mVerticalWrapperDataList = verticalWrapperList;
         mListener = listener;
 
@@ -49,9 +49,9 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
 
     private int getMonth(int position) {
         List<String> stringNameList = new ArrayList<>(mVerticalWrapperDataList.keySet());
-        String[] value =   stringNameList.get(position).split("_");
+        String[] value = stringNameList.get(position).split("_");
         if (value.length > 1) {
-            int month =  Integer.parseInt(value[1]);
+            int month = Integer.parseInt(value[1]);
             return month;
         }
         return 0;
@@ -59,9 +59,9 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
 
     private int getYear(int position) {
         List<String> stringNameList = new ArrayList<>(mVerticalWrapperDataList.keySet());
-        String[] value =   stringNameList.get(position).split("_");
+        String[] value = stringNameList.get(position).split("_");
         if (value.length > 1) {
-            int month =  Integer.parseInt(value[0]);
+            int month = Integer.parseInt(value[0]);
             return month;
         }
         return 0;
@@ -70,7 +70,7 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.vertical_recycler_view_item, parent,  false);
+                .inflate(R.layout.vertical_recycler_view_item, parent, false);
         return new Holder(itemLayoutView);
     }
 
@@ -82,10 +82,10 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
         holder.mMonthTextView.setText(getMonthName(currentMonth) + " " + currentYear);
         int childCount = holder.mTableLayout.getChildCount();
         int dateListIndexCount = 0;
-        for (int i = 0; i < childCount ; i ++){
+        for (int i = 0; i < childCount; i++) {
             TableRow tableRow = (TableRow) holder.mTableLayout.getChildAt(i);
             int tableRowChildCount = tableRow.getChildCount();
-            for (int j = 0; j < tableRowChildCount; j++){
+            for (int j = 0; j < tableRowChildCount; j++) {
                 CheckBox checkBox = (CheckBox) tableRow.getChildAt(j);
                 Date dateOBj = dateList.get(dateListIndexCount);
                 Calendar calendar = Calendar.getInstance();
@@ -97,7 +97,7 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
                 checkBox.setText(String.valueOf(date));
                 setBackgroundColor(checkBox, calendar, currentMonth, Calendar.getInstance());
                 checkBox.setOnCheckedChangeListener(this);
-                dateListIndexCount ++;
+                dateListIndexCount++;
             }
         }
     }
@@ -158,7 +158,7 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
         }
     }
 
-    private void checkBoxSelectedState(CheckBox checkBox){
+    private void checkBoxSelectedState(CheckBox checkBox) {
         checkBox.setTextColor(ContextCompat.getColor(checkBox.getContext(), R.color.white));
         checkBox.setBackgroundColor(CustomVerticalCalenderViewJava.getmDateSelectionColor());
     }
@@ -235,7 +235,7 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
 
 
             }
-        } else if (CustomVerticalCalenderViewJava.isSingleClick()){
+        } else if (CustomVerticalCalenderViewJava.isSingleClick()) {
             if (mselectedDateList.size() != 0) {
                 Date date = mselectedDateList.get(0);
                 Calendar previousDate = Calendar.getInstance();
@@ -276,17 +276,19 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
         }
     }
 
-    public final  class Holder extends RecyclerView.ViewHolder {
+    public final class Holder extends RecyclerView.ViewHolder {
         protected TextView mMonthTextView;
         protected TableLayout mTableLayout;
+
         public Holder(View view) {
             super(view);
-            this.mMonthTextView = (TextView)view.findViewById(R.id.month_text);
-            this.mTableLayout = (TableLayout)view.findViewById(R.id.table_layout_id);
+            this.mMonthTextView = (TextView) view.findViewById(R.id.month_text);
+            this.mTableLayout = (TableLayout) view.findViewById(R.id.table_layout_id);
 
         }
     }
-    public interface DateSelectionListener{
+
+    public interface DateSelectionListener {
         void onDateSelected(List<Date> dateList);
     }
 }
