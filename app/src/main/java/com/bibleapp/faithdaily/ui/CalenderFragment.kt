@@ -1,6 +1,7 @@
 package com.bibleapp.faithdaily.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,7 +25,7 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
                 R.color.colorAccent
             )
         )
-        // custom_calender_view.setListener(context)
+      //   custom_calender_view.setListener(activity)
 
     }
 
@@ -33,6 +34,8 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
         for (date in dateList!!) {
             val calendar = Calendar.getInstance()
             calendar.time = date
+            //Log.d(MainActivity.TAG, "Main Activity date list" + calendar[Calendar.DATE])
+
         }
     }
 }

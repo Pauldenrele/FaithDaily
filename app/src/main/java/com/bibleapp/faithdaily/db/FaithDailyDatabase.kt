@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.bibleapp.faithdaily.FaithDailyResponse
+import com.bibleapp.faithdaily.model.FaithDailyResponse
 
 @Database(
     entities = [FaithDailyResponse::class],

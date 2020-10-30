@@ -3,12 +3,9 @@ package com.bibleapp.faithdaily.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bibleapp.faithdaily.FaithDailyResponse
+import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.R
-import com.bibleapp.faithdaily.ui.HomeFragment
 import kotlinx.android.synthetic.main.item_preview.view.*
 
 
@@ -19,7 +16,7 @@ class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>): Rec
 
     inner class FaithDailyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        fun bind (faithdaily:FaithDailyResponse){
+        fun bind (faithdaily: FaithDailyResponse){
             itemView.apply {
                 tvSource.text = faithdaily.date
                 tvTitle.text = faithdaily.title

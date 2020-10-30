@@ -1,6 +1,6 @@
 package com.bibleapp.faithdaily.repository
 
-import com.bibleapp.faithdaily.FaithDailyResponse
+import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.api.RetrofitInstance
 import com.bibleapp.faithdaily.db.FaithDailyDatabase
 

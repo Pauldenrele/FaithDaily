@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bibleapp.faithdaily.FaithDailyResponse
-import com.bibleapp.faithdaily.MainActivity
-import com.bibleapp.faithdaily.MainViewModel
-import com.bibleapp.faithdaily.R
+import com.bibleapp.faithdaily.*
 import com.bibleapp.faithdaily.adapter.FaithDailyAdapter
+import com.bibleapp.faithdaily.adapter.ImageAdapter
+import com.bibleapp.faithdaily.model.FaithDailyResponse
+import com.bibleapp.faithdaily.model.ImageModel
 import com.bibleapp.faithdaily.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.bibleapp.faithdaily.util.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -30,14 +29,47 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     val TAG = "HomeFragment"
 
+    private var imageModelArrayList: ArrayList<ImageModel>? = null
+    private var adapter: ImageAdapter? = null
+
+    private val myImageList = intArrayOf(
+        R.drawable.prayerlanguage,
+        R.drawable.worship,
+        R.drawable.praying,
+        R.drawable.worship,
+        R.drawable.prayerlanguage,
+        R.drawable.blue,
+        R.drawable.water
+    )
+    private val myImageNameList =
+        arrayOf("Apple", "Mango", "Strawberry", "Pineapple", "Orange", "Blueberry", "Watermelon")
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
 
+
+        getBibleDetails()
+
+        imageModelArrayList = eatFruits()
+        adapter = imageModelArrayList?.let { ImageAdapter(activity, it) }
+        recycler.setAdapter(adapter)
+        recycler.setLayoutManager(
+            LinearLayoutManager(
+                activity,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+        )
 
         setupDate()
+
+    }
+
+
+    private fun getBibleDetails() {
+        viewModel = (activity as MainActivity).viewModel
+
         viewModel.faithDailyhome.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
@@ -58,7 +90,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         })
-    }
+       }
 
 
     private fun hideProgressBar() {
@@ -128,24 +160,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
 
         if (timeOfDay >= 0 && timeOfDay < 12) {
-            Toast.makeText(activity, "Good Morning", Toast.LENGTH_SHORT).show()
             img_day.setImageResource(R.drawable.sunrise32px)
-            txtDay.text = "Good\n Morning"
+            txtDay.text = "Good\nMorning"
         } else if (timeOfDay >= 12 && timeOfDay < 16) {
-            Toast.makeText(activity, "Good Afternoon", Toast.LENGTH_SHORT).show()
             img_day.setImageResource(R.drawable.sun32px)
-
-            txtDay.text = "Good \nAfternoon"
+            txtDay.text = "Good\nAfternoon"
         } else if (timeOfDay >= 16 && timeOfDay < 21) {
-            Toast.makeText(activity, "Good Evening", Toast.LENGTH_SHORT).show()
             img_day.setImageResource(R.drawable.moon32px)
-
-            txtDay.text = "Good \nEvening"
+            txtDay.text = "Good\nEvening"
 
         } else if (timeOfDay >= 21 && timeOfDay < 24) {
-            Toast.makeText(activity, "Good Night", Toast.LENGTH_SHORT).show()
             img_day.setImageResource(R.drawable.moon32px)
-
             txtDay.text = "Good\nEvening"
         }
 
@@ -153,9 +178,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         txtDate.text = "${
             current.dayOfWeek.toString().substring(0, 1).toUpperCase() +
                     current.dayOfWeek.toString().substring(1).toLowerCase()
-        } ,${current.dayOfMonth} ${ current.month.toString().substring(0, 1).toUpperCase() +
-                current.month.toString().substring(1).toLowerCase()}"
+        } ,${current.dayOfMonth} ${
+            current.month.toString().substring(0, 1).toUpperCase() +
+                    current.month.toString().substring(1).toLowerCase()
+        }"
 
 
+    }
+    private fun eatFruits(): ArrayList<ImageModel>? {
+        val list: ArrayList<ImageModel> = ArrayList<ImageModel>()
+        for (i in 0..6) {
+            val fruitModel = ImageModel()
+            fruitModel.name = myImageNameList[i]
+            fruitModel.image_drawable=myImageList[i]
+            list.add(fruitModel)
+        }
+        return list
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getBibleDetails()
     }
 }

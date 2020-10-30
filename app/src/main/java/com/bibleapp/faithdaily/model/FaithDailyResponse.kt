@@ -1,4 +1,4 @@
-package com.bibleapp.faithdaily
+package com.bibleapp.faithdaily.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
