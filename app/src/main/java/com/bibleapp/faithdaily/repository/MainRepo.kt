@@ -8,7 +8,7 @@ class MainRepo(
     val db: FaithDailyDatabase
 ) {
     suspend fun getDailyResp(day: Int) =
-        RetrofitInstance.api.getDailyResponse(2)
+        RetrofitInstance.api.getDailyResponse(day)
 
     suspend fun upsert(faithDaily: FaithDailyResponse) = db.getfaithdailyDao().insert(faithDaily)
 

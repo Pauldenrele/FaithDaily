@@ -49,7 +49,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        getBibleDetails()
+      //  getBibleDetails()
 
         imageModelArrayList = eatFruits()
         adapter = imageModelArrayList?.let { ImageAdapter(activity, it) }
@@ -126,7 +126,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.getDailyHome()
+             //   viewModel.getDailyHome()
                 isScrolling = false
             }
         }
@@ -198,6 +198,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
-        getBibleDetails()
+       // getBibleDetails()
     }
 }

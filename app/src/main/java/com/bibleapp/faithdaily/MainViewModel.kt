@@ -21,14 +21,15 @@ class MainViewModel(
     val mainRepository: MainRepo
 ) : AndroidViewModel(app) {
 
+    val day:Int = 0
     val faithDailyhome: MutableLiveData<Resource<FaithDailyResponse>> = MutableLiveData()
 
     init {
-        getDailyHome()
+        getDailyHome(day)
     }
 
-    fun getDailyHome() = viewModelScope.launch {
-        safeHomeCall()
+    fun getDailyHome(day: Int) = viewModelScope.launch {
+        safeHomeCall(day)
 
     }
 
@@ -48,10 +49,10 @@ class MainViewModel(
     fun getDetails() = mainRepository.getfaithDetails()
 
 
-    private suspend fun safeHomeCall() {
+    private suspend fun safeHomeCall(day:Int) {
         faithDailyhome.postValue(Resource.Loading())
         if (hasInternetConnection()) {
-            val response = mainRepository.getDailyResp(2)
+            val response = mainRepository.getDailyResp(day)
             faithDailyhome.postValue(handleDailyHomeResponse(response))
         } else {
             faithDailyhome.postValue(Resource.Error("No internet connection"))
@@ -59,7 +60,7 @@ class MainViewModel(
 
         try {
             if (hasInternetConnection()) {
-                val response = mainRepository.getDailyResp(2)
+                val response = mainRepository.getDailyResp(day)
                 faithDailyhome.postValue(handleDailyHomeResponse(response))
             } else {
                 faithDailyhome.postValue(Resource.Error("No internet connection"))
