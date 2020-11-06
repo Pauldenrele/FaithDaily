@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bibleapp.faithdaily.MainViewModel
 import com.bibleapp.faithdaily.MainViewModelProviderFactory
@@ -15,11 +16,12 @@ import com.bibleapp.faithdaily.adapter.FaithDailyAdapter
 import com.bibleapp.faithdaily.db.FaithDailyDatabase
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.repository.MainRepo
+import com.bibleapp.faithdaily.util.DataState
 import com.bibleapp.faithdaily.util.Resource
 import kotlinx.android.synthetic.main.activity_word.*
+import kotlinx.coroutines.CoroutineScope
 
 class WordActivity : AppCompatActivity() {
-    lateinit var viewModel: MainViewModel
     lateinit var postAdapter: FaithDailyAdapter
     val TAG = "WordFragment"
 
@@ -28,48 +30,38 @@ class WordActivity : AppCompatActivity() {
         setContentView(R.layout.activity_word)
 
 
+        val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
 
-        val ss: Int = intent.getIntExtra("keyIdentifier" ,0)
-        Toast.makeText(
-            this, "$ss",
-            Toast.LENGTH_SHORT
-        ).show()
-
-         getBibleDetails(ss)
-
+        getBibleDetails(getDateNum)
 
     }
-    private fun getBibleDetails(day:Int) {
+
+    private fun getBibleDetails(day: Int) {
+
         val mainRepository = MainRepo(FaithDailyDatabase(this))
 
         val viewModel: MainViewModel =
-            ViewModelProviders.of(this, MainViewModelProviderFactory(this.application, mainRepository))
+            ViewModelProviders.of(
+                this,
+                MainViewModelProviderFactory(this.application, mainRepository)
+            )
                 .get(
                     MainViewModel::class.java
                 )
 
-        viewModel.getDailyHome(day)
+        viewModel.getFaithDail(day)?.observe(this, Observer {
 
-       viewModel.faithDailyhome.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
+            when (it) {
+                is DataState.Success -> {
+                    setupRecyclerView(listOf(it.data))
                     hideProgressBar()
-                    response.data
-                    setupRecyclerView(listOf(response.data!!))
-
-                    Log.d(TAG, "Message: ${response.data}")
                 }
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        Log.d(TAG, "An error occured: $message")
-                    }
-                }
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
+                is DataState.Loading -> showProgressBar()
+                is DataState.Error -> hideProgressBar()
             }
         })
+
+
     }
 
 
@@ -87,9 +79,6 @@ class WordActivity : AppCompatActivity() {
 
 
     var isLoading = false
-    var isLastPage = false
-    var isScrolling = false
-
 
 
     private fun setupRecyclerView(
@@ -100,7 +89,7 @@ class WordActivity : AppCompatActivity() {
 
             adapter = postAdapter
             layoutManager = LinearLayoutManager(context)
-          //  addOnScrollListener(this.scrollListener)
+            //  addOnScrollListener(this.scrollListener)
 
         }
         postAdapter.notifyDataSetChanged()

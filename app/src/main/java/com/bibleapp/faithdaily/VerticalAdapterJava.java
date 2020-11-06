@@ -255,7 +255,12 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
             mListener.onDateSelected(mselectedDateList);
         } else { // by defalut multi click support
             handleClick(checked, checkBox, seletedDate, calendar);
+
             mListener.onDateSelected(mselectedDateList);
+
+            mselectedDateList.clear(); // clearing the list for handling single item click
+
+
         }
 
         Log.d(TAG, "final size " + mselectedDateList.size());

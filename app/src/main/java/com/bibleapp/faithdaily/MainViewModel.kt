@@ -5,11 +5,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.repository.MainRepo
+import com.bibleapp.faithdaily.util.DataState
 import com.bibleapp.faithdaily.util.Resource
 import kotlinx.coroutines.launch
 
@@ -22,58 +21,32 @@ class MainViewModel(
 ) : AndroidViewModel(app) {
 
     val day:Int = 0
-    val faithDailyhome: MutableLiveData<Resource<FaithDailyResponse>> = MutableLiveData()
 
-    init {
-        getDailyHome(day)
+
+    fun getFaithDail(day: Int):LiveData<DataState<FaithDailyResponse>>{
+        return mainRepository.getFaithDaily(day).asLiveData()
     }
 
-    fun getDailyHome(day: Int) = viewModelScope.launch {
-        safeHomeCall(day)
-
-    }
-
-    private fun handleDailyHomeResponse(response: Response<FaithDailyResponse>): Resource<FaithDailyResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
-            }
-        }
-        return Resource.Error(response.message())
-    }
-
-    fun saveDetail(faithDailyDetails: FaithDailyResponse) = viewModelScope.launch {
-        mainRepository.upsert(faithDailyDetails)
-    }
-
-    fun getDetails() = mainRepository.getfaithDetails()
 
 
-    private suspend fun safeHomeCall(day:Int) {
-        faithDailyhome.postValue(Resource.Loading())
+   /* private suspend fun safeHomeCall(day:Int) {
         if (hasInternetConnection()) {
             val response = mainRepository.getDailyResp(day)
-            faithDailyhome.postValue(handleDailyHomeResponse(response))
         } else {
-            faithDailyhome.postValue(Resource.Error("No internet connection"))
         }
 
         try {
             if (hasInternetConnection()) {
                 val response = mainRepository.getDailyResp(day)
-                faithDailyhome.postValue(handleDailyHomeResponse(response))
             } else {
-                faithDailyhome.postValue(Resource.Error("No internet connection"))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> faithDailyhome.postValue(Resource.Error("Network Failure"))
-                else -> faithDailyhome.postValue(Resource.Error("Conversion Error"))
-            }
+                is IOException ->      else ->  }
         }
     }
 
-    private fun hasInternetConnection(): Boolean {
+   */ private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<MainApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager

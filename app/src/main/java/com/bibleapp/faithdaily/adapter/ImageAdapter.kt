@@ -23,7 +23,6 @@ class ImageAdapter(ctx: Context?, imageModelArrayList: ArrayList<ImageModel>) :
     }
 
 
-
     inner class MyViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var time: TextView

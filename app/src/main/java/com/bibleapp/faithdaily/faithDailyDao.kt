@@ -1,4 +1,4 @@
-package com.bibleapp.faithdaily.db
+package com.bibleapp.faithdaily
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -8,12 +8,16 @@ import androidx.room.Query
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 
 @Dao
-interface FaithDailyDao {
+interface faithDailyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(faithdailyresponse: FaithDailyResponse): Long
+    suspend fun insert(faithdailyresponse: FaithDailyResponse)
 
-    @Query("SELECT * FROM faithdaily")
+    @Query("SELECT * FROM faithdaily ")
     fun getAllDetails(): LiveData<List<FaithDailyResponse>>
+
+
+    @Query("SELECT * FROM faithdaily WHERE day=:id")
+   fun getFaithDailyById(id:Int):FaithDailyResponse?
 
 }

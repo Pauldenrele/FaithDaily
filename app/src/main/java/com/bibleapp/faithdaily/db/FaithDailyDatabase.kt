@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.bibleapp.faithdaily.faithDailyDao
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 
 @Database(
@@ -12,7 +13,8 @@ import com.bibleapp.faithdaily.model.FaithDailyResponse
 )
 abstract class FaithDailyDatabase : RoomDatabase() {
 
-    abstract fun getfaithdailyDao(): FaithDailyDao
+    abstract fun getfaithdailyDao(): faithDailyDao
+
 
     companion object {
         @Volatile
@@ -28,6 +30,6 @@ abstract class FaithDailyDatabase : RoomDatabase() {
                 context.applicationContext,
                 FaithDailyDatabase::class.java,
                 "faithdaily_db.db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
     }
 }

@@ -18,10 +18,10 @@ class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>): Rec
 
         fun bind (faithdaily: FaithDailyResponse){
             itemView.apply {
-                tvSource.text = faithdaily.date
-                tvTitle.text = faithdaily.title
+               /* tvDate.text = faithdaily.date
+               */ tvTitle.text = faithdaily.title
                 tvDescription.text = faithdaily.daily_message
-                tvPublishedAt.text = faithdaily.bible_verse
+                tvVerse.text = faithdaily.bible_verse
                 setOnClickListener {
                     onItemClickListener?.let { it(faithdaily) }
                 }

@@ -38,8 +38,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         R.drawable.praying,
         R.drawable.worship,
         R.drawable.prayerlanguage,
-        R.drawable.blue,
-        R.drawable.water
+        R.drawable.praying,
+        R.drawable.worship
     )
     private val myImageNameList =
         arrayOf("Apple", "Mango", "Strawberry", "Pineapple", "Orange", "Blueberry", "Watermelon")
@@ -67,30 +67,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
 
-    private fun getBibleDetails() {
-        viewModel = (activity as MainActivity).viewModel
-
-        viewModel.faithDailyhome.observe(viewLifecycleOwner, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-                    response.data
-                    setupRecyclerView(listOf(response.data!!))
-
-                    Log.d(TAG, "Message: ${response.data}")
-                }
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        Log.d(TAG, "An error occured: $message")
-                    }
-                }
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
-            }
-        })
-       }
 
 
     private fun hideProgressBar() {

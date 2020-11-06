@@ -15,10 +15,8 @@ data class FaithDailyResponse(
     @SerializedName("date")
     val date: String,
     @SerializedName("day")
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val day: Int,
-    @SerializedName("sub_title")
-    val sub_title: String,
     @SerializedName("title")
     val title: String
 )

@@ -21,7 +21,7 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
         super.onViewCreated(view, savedInstanceState)
 
 
-        custom_calender_view.updateCalendar(6)
+        custom_calender_view.updateCalendar(4)
         custom_calender_view.setDateSelectionColor(
             ContextCompat.getColor(
                 context!!,
@@ -37,15 +37,11 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
     override fun onDateSelected(dateList: List<Date>?) {
 
 
+
         for (date in dateList!!) {
             val calendar = Calendar.getInstance()
             calendar.time = date
             Log.d(TAG, "Main Activity date list" + calendar[Calendar.DAY_OF_YEAR])
-
-            Toast.makeText(
-                activity, "Next Activity ${calendar[Calendar.DAY_OF_YEAR]}",
-                Toast.LENGTH_SHORT
-            ).show()
 
             val intent = Intent(activity, WordActivity::class.java)
             intent.putExtra("keyIdentifier", calendar[Calendar.DAY_OF_YEAR])
