@@ -1,13 +1,11 @@
 package com.bibleapp.faithdaily.ui
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bibleapp.faithdaily.MainViewModel
 import com.bibleapp.faithdaily.MainViewModelProviderFactory
@@ -17,9 +15,8 @@ import com.bibleapp.faithdaily.db.FaithDailyDatabase
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.repository.MainRepo
 import com.bibleapp.faithdaily.util.DataState
-import com.bibleapp.faithdaily.util.Resource
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_word.*
-import kotlinx.coroutines.CoroutineScope
 
 class WordActivity : AppCompatActivity() {
     lateinit var postAdapter: FaithDailyAdapter
@@ -49,15 +46,23 @@ class WordActivity : AppCompatActivity() {
                     MainViewModel::class.java
                 )
 
-        viewModel.getFaithDail(day)?.observe(this, Observer {
+        viewModel.getFaithDail(day).observe(this, Observer {
 
             when (it) {
                 is DataState.Success -> {
                     setupRecyclerView(listOf(it.data))
                     hideProgressBar()
+                    hideRetryButton()
                 }
-                is DataState.Loading -> showProgressBar()
-                is DataState.Error -> hideProgressBar()
+                is DataState.Loading -> {
+                    showProgressBar()
+                    hideRetryButton()
+                }
+                is DataState.Error -> {
+                    hideProgressBar()
+                    showRetryButton(day)
+
+                }
             }
         })
 
@@ -69,6 +74,27 @@ class WordActivity : AppCompatActivity() {
         paginationProgressBar.visibility = View.INVISIBLE
         isLoading = false
 
+    }
+
+    private fun hideRetryButton() {
+        retryButton.visibility = View.INVISIBLE
+    }
+
+    private fun showRetryButton(day: Int) {
+        val parentLayout = findViewById<View>(android.R.id.content)
+
+        retryButton.visibility = View.VISIBLE
+        val snack =
+            Snackbar.make(parentLayout, "Check your Internet Connection", Snackbar.LENGTH_LONG)
+        val snackbarView = snack.view
+        snackbarView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+
+        snack.show()
+        retryButton.setOnClickListener {
+            getBibleDetails(day)
+            isLoading = true
+
+        }
     }
 
     private fun showProgressBar() {

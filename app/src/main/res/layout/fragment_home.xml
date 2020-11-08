@@ -1,50 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
-
-        <TextView
-            android:id="@+id/txtDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30sp"
-            android:layout_marginLeft="30sp"
-           android:fontFamily="@font/pingfang"
-             android:text="Good\nMorning"
-            android:textColor="#610A0A"
-            android:padding="3dp"
-            android:layout_marginTop="25sp"
-            android:textSize="35dp"
-            android:textStyle="bold"
-            />
+    <TextView
+        android:id="@+id/txtDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginTop="25sp"
+        android:fontFamily="@font/pingfang"
+        android:padding="3dp"
+        android:text="@string/time_of_the_day"
+        android:textColor="#610A0A"
+        android:textSize="35sp"
+        android:textStyle="bold" />
 
 
     <ImageView
         android:id="@+id/img_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="180sp"
         android:layout_marginTop="74sp"
         android:src="@drawable/sunrise32px"
-        android:layout_marginStart="166sp"
-
-        />
+        android:layout_marginLeft="180sp" />
 
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtDay"
         android:layout_marginStart="33sp"
         android:layout_marginLeft="30sp"
-        android:fontFamily="@font/pingfang"
-        android:text="21-30-98"
-        android:padding="2sp"
         android:layout_marginTop="3sp"
-        android:layout_below="@id/txtDay"
+        android:fontFamily="@font/pingfang"
+        android:padding="2sp"
+        android:text="@string/date_home"
         android:textAllCaps="false"
         android:textSize="15sp" />
 
@@ -52,16 +48,16 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:layout_below="@id/txtDate"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:padding="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBreakingNews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/recycler"
         android:clipToPadding="false"
-       android:layout_below="@id/recycler"
         android:paddingBottom="50dp" />
 
     <ProgressBar

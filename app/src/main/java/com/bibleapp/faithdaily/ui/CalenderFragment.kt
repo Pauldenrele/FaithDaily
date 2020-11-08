@@ -36,8 +36,6 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
 
     override fun onDateSelected(dateList: List<Date>?) {
 
-
-
         for (date in dateList!!) {
             val calendar = Calendar.getInstance()
             calendar.time = date

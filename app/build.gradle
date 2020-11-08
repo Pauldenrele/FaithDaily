@@ -13,8 +13,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions{
-        jvmTarget =JavaVersion.VERSION_1_8.toString()
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
 
     }
 
@@ -28,6 +28,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
 
     buildTypes {
         release {
@@ -60,7 +65,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
 
-
     //Lifecycle
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -73,6 +77,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_android_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_android_version"
 
+//CalendarView
+    implementation 'com.github.kizitonwose:CalendarView:0.4.5'
 
 
     //Room

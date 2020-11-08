@@ -22,7 +22,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJava.Holder> implements CompoundButton.OnCheckedChangeListener {
+public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJava.Holder> implements
+        CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = VerticalAdapterJava.class.getSimpleName();
     private final DateSelectionListener mListener;
@@ -34,7 +35,6 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
                                DateSelectionListener listener) {
         mVerticalWrapperDataList = verticalWrapperList;
         mListener = listener;
-
     }
 
     public void setData(LinkedHashMap<String, List<Date>> verticalWrapperList) {
@@ -281,14 +281,14 @@ public class VerticalAdapterJava extends RecyclerView.Adapter<VerticalAdapterJav
         }
     }
 
-    public final class Holder extends RecyclerView.ViewHolder {
+    public static final class Holder extends RecyclerView.ViewHolder {
         protected TextView mMonthTextView;
         protected TableLayout mTableLayout;
 
         public Holder(View view) {
             super(view);
-            this.mMonthTextView = (TextView) view.findViewById(R.id.month_text);
-            this.mTableLayout = (TableLayout) view.findViewById(R.id.table_layout_id);
+            this.mMonthTextView =  view.findViewById(R.id.month_text);
+            this.mTableLayout = view.findViewById(R.id.table_layout_id);
 
         }
     }
