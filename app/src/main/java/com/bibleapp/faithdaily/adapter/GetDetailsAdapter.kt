@@ -4,23 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.R
+import com.bibleapp.faithdaily.model.FaithDailyResponse
 import kotlinx.android.synthetic.main.item_preview.view.*
 
+class GetDetailsAdapter (private var listOfPosts: List<FaithDailyResponse>):
+    RecyclerView.Adapter<GetDetailsAdapter.GetDetailsViewHolder>() {
 
-
-
-
-class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>):
-    RecyclerView.Adapter<FaithDailyAdapter.FaithDailyViewHolder>() {
-
-    inner class FaithDailyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class GetDetailsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         fun bind (faithdaily: FaithDailyResponse){
             itemView.apply {
-               /* tvDate.text = faithdaily.date
-               */ tvTitle.text = faithdaily.title
+                /* tvDate.text = faithdaily.date
+                */ tvTitle.text = faithdaily.title
                 tvDescription.text = faithdaily.daily_message
                 tvVerse.text = faithdaily.bible_verse
                 setOnClickListener {
@@ -37,16 +33,16 @@ class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>):
         onItemClickListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FaithDailyViewHolder {
-        return FaithDailyViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GetDetailsViewHolder {
+        return GetDetailsViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_preview,
+                R.layout.item_details,
                 parent,
                 false
             )
         ) }
 
-    override fun onBindViewHolder(holder: FaithDailyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GetDetailsViewHolder, position: Int) {
         val faithdaily = listOfPosts[position]
         holder.bind(faithdaily)
     }

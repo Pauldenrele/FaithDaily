@@ -24,12 +24,17 @@ class MainRepo(
     suspend fun getDailyResp(day: Int) =
         RetrofitInstance.api.getDailyResponse(day)
 
+    fun getFav() = db.getfaithdailyDao().getsavDetails()
+
+   suspend fun deleteFav(faithDaily: FaithDailyResponse) = db.getfaithdailyDao().delete(faithDaily)
+    suspend fun addFav(id: Int) = db.getfaithdailyDao().setFavorite(id)
+    suspend fun delFav(id: Int) = db.getfaithdailyDao().setFalseFavorite(id)
+
     suspend fun upsert(faithDaily: FaithDailyResponse) = db.getfaithdailyDao().insert(faithDaily)
 
     //database
-    fun getfaithDetails(day: Int) =
-
-        db.getfaithdailyDao().getFaithDailyById(day)
+    fun getfaithDetails() =
+        db.getfaithdailyDao().getAllDetails()
 
     fun getFaithDaily(day: Int): Flow<DataState<FaithDailyResponse>> = flow {
         emit(DataState.Loading)
@@ -39,19 +44,19 @@ class MainRepo(
             val result = RetrofitInstance.api.getDailyResponse(day)
 
 
-            if( result.isSuccessful) {
+            if (result.isSuccessful) {
                 db.getfaithdailyDao().insert(result.body()!!)
                 emit(DataState.Success(result.body()!!))
 
             }
-        }else {
+        } else {
             emit(DataState.Success(cache))
 
         }
 
     }.catch { e ->
         Timber.e(e)
-        emit(DataState.Error(null , "Failed to load"))
+        emit(DataState.Error(null, "Failed to load"))
     }.flowOn(Dispatchers.IO)
 
 

@@ -1,6 +1,5 @@
 package com.bibleapp.faithdaily.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -26,12 +25,28 @@ class WordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word)
 
-
         val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
+
+        fab.setOnClickListener {
+
+            val parentLayout = findViewById<View>(android.R.id.content)
+
+            val snack =
+                Snackbar.make(parentLayout, "Saved", Snackbar.LENGTH_LONG)
+            val snackbarView = snack.view
+            snackbarView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+            snack.show()
+
+
+
+            saveDetails(id = getDateNum)
+        }
+
 
         getBibleDetails(getDateNum)
 
     }
+
 
     private fun getBibleDetails(day: Int) {
 
@@ -69,6 +84,22 @@ class WordActivity : AppCompatActivity() {
 
     }
 
+
+    private fun saveDetails(id: Int) {
+        val mainRepository = MainRepo(FaithDailyDatabase(this))
+
+        val viewModel: MainViewModel =
+            ViewModelProviders.of(
+                this,
+                MainViewModelProviderFactory(this.application, mainRepository)
+            ).get(
+                MainViewModel::class.java
+            )
+
+        viewModel.savFav(id)
+
+
+    }
 
     private fun hideProgressBar() {
         paginationProgressBar.visibility = View.INVISIBLE

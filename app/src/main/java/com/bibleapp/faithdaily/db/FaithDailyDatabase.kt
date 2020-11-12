@@ -9,7 +9,7 @@ import com.bibleapp.faithdaily.model.FaithDailyResponse
 
 @Database(
     entities = [FaithDailyResponse::class],
-    version = 1
+    version = 1 ,  exportSchema = false
 )
 abstract class FaithDailyDatabase : RoomDatabase() {
 

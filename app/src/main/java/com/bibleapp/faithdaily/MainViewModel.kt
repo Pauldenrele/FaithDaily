@@ -27,9 +27,27 @@ class MainViewModel(
         return mainRepository.getFaithDaily(day).asLiveData()
     }
 
+    fun saveArticle(article: FaithDailyResponse) = viewModelScope.launch {
+        mainRepository.upsert(article)
+    }
 
+   fun savFav(id:Int) =viewModelScope.launch {
+       mainRepository.addFav(id)
+   }
 
-   /* private suspend fun safeHomeCall(day:Int) {
+    fun delFav(id:Int) =viewModelScope.launch {
+        mainRepository.delFav(id)
+    }
+
+    fun getSavedNews() = mainRepository.getfaithDetails()
+
+    fun delete(faithDailyResponse: FaithDailyResponse) = viewModelScope.launch {
+        mainRepository.deleteFav(faithDailyResponse)
+    }
+
+    fun getSavFav() = mainRepository.getFav()
+
+    /* private suspend fun safeHomeCall(day:Int) {
         if (hasInternetConnection()) {
             val response = mainRepository.getDailyResp(day)
         } else {
