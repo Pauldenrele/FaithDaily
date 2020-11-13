@@ -1,4 +1,4 @@
-package com.bibleapp.faithdaily
+package com.bibleapp.faithdaily.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

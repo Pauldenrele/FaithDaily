@@ -1,4 +1,4 @@
-package com.bibleapp.faithdaily
+package com.bibleapp.faithdaily.viewmodel
 
 import android.app.Application
 import android.content.Context
@@ -6,14 +6,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.lifecycle.*
+import com.bibleapp.faithdaily.MainApplication
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.repository.MainRepo
 import com.bibleapp.faithdaily.util.DataState
-import com.bibleapp.faithdaily.util.Resource
 import kotlinx.coroutines.launch
-
-import retrofit2.Response
-import java.io.IOException
 
 class MainViewModel(
     app: Application,

@@ -1,13 +1,16 @@
 package com.bibleapp.faithdaily.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bibleapp.faithdaily.MainViewModel
-import com.bibleapp.faithdaily.MainViewModelProviderFactory
+import com.bibleapp.faithdaily.viewmodel.MainViewModel
+import com.bibleapp.faithdaily.viewmodel.MainViewModelProviderFactory
 import com.bibleapp.faithdaily.R
 import com.bibleapp.faithdaily.adapter.FaithDailyAdapter
 import com.bibleapp.faithdaily.db.FaithDailyDatabase
@@ -24,8 +27,8 @@ class WordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word)
-
         val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
+
 
         fab.setOnClickListener {
 
@@ -137,6 +140,45 @@ class WordActivity : AppCompatActivity() {
 
     var isLoading = false
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_menu, menu)
+        return true
+
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here.
+
+        val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
+        val parentLayout = findViewById<View>(android.R.id.content)
+
+        val id = item.getItemId()
+
+        if (id == R.id.action_one) {
+            saveDetails(id = getDateNum)
+
+            val snack =
+                Snackbar.make(parentLayout, "Saved", Snackbar.LENGTH_LONG)
+            val snackbarView = snack.view
+            snackbarView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+            snack.show()
+
+
+            return true
+        }
+        if (id == R.id.action_two) {
+            Toast.makeText(this, "Item Two Clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+        if (id == R.id.action_three) {
+            Toast.makeText(this, "Item Three Clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+
+    }
 
     private fun setupRecyclerView(
         response: List<FaithDailyResponse>

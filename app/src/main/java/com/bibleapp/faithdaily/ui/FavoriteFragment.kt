@@ -2,7 +2,6 @@ package com.bibleapp.faithdaily.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -10,9 +9,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bibleapp.faithdaily.MainActivity
-import com.bibleapp.faithdaily.MainViewModel
+import com.bibleapp.faithdaily.viewmodel.MainViewModel
 import com.bibleapp.faithdaily.R
-import com.bibleapp.faithdaily.SwipeToDeleteCallBack
+import com.bibleapp.faithdaily.util.SwipeToDeleteCallBack
 import com.bibleapp.faithdaily.adapter.FavoriteAdapter
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import kotlinx.android.synthetic.main.fragment_favorite.*

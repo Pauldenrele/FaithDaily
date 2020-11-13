@@ -3,10 +3,8 @@ package com.bibleapp.faithdaily.ui
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -14,7 +12,10 @@ import com.bibleapp.faithdaily.*
 import com.bibleapp.faithdaily.databinding.Example2CalendarDayBinding
 import com.bibleapp.faithdaily.databinding.Example2CalendarHeaderBinding
 import com.bibleapp.faithdaily.databinding.Example2FragmentBinding
-import com.bibleapp.faithdaily.setTextColorRes
+import com.bibleapp.faithdaily.util.daysOfWeekFromLocale
+import com.bibleapp.faithdaily.util.makeInVisible
+import com.bibleapp.faithdaily.util.makeVisible
+import com.bibleapp.faithdaily.util.setTextColorRes
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner

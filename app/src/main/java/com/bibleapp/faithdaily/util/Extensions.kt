@@ -1,4 +1,4 @@
-package com.bibleapp.faithdaily
+package com.bibleapp.faithdaily.util
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable

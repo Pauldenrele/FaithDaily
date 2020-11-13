@@ -1,34 +1,29 @@
 package com.bibleapp.faithdaily.ui
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bibleapp.faithdaily.*
-import com.bibleapp.faithdaily.adapter.FaithDailyAdapter
+import com.bibleapp.faithdaily.MainActivity
+import com.bibleapp.faithdaily.R
 import com.bibleapp.faithdaily.adapter.GetDetailsAdapter
 import com.bibleapp.faithdaily.adapter.ImageAdapter
-import com.bibleapp.faithdaily.db.FaithDailyDatabase
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.model.ImageModel
-import com.bibleapp.faithdaily.repository.MainRepo
 import com.bibleapp.faithdaily.util.Constants.Companion.QUERY_PAGE_SIZE
-import com.bibleapp.faithdaily.util.DataState
-import com.bibleapp.faithdaily.util.Resource
 import com.bibleapp.faithdaily.util.generateList
-import com.google.android.material.snackbar.Snackbar
+import com.bibleapp.faithdaily.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_word.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.paginationProgressBar
-import java.lang.Math.random
+import kotlinx.android.synthetic.main.item_preview.*
 import java.time.LocalDate
 import java.util.*
 
@@ -65,6 +60,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
             setupRecyclerView(articles)
+
+            postAdapter.setOnItemClickListener {
+                val intent = Intent(context, DetailsActivity::class.java)
+                intent.putExtra("Key", it.daily_message)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    activity as MainActivity,
+                    (tvDescription as View?)!!, "profile"
+                )
+                startActivity(intent, options.toBundle())
+
+            }
         })
 
         //   getBibleDetails()

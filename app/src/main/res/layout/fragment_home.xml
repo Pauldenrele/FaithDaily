@@ -25,10 +25,11 @@
         android:id="@+id/img_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180sp"
-        android:layout_marginTop="74sp"
-        android:src="@drawable/sunrise32px"
-        android:layout_marginLeft="180sp" />
+        android:layout_toRightOf="@id/txtDay"
+        android:layout_marginTop="75sp"
+        android:src="@drawable/sun32px"
+        android:layout_marginStart="10sp"
+        android:layout_toEndOf="@id/txtDay" />
 
     <TextView
         android:id="@+id/txtDate"
