@@ -61,6 +61,20 @@
         android:clipToPadding="false"
         android:paddingBottom="50dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pingfang"
+        android:text="Click here to \n start reading \n Daily Devotionals"
+        android:layout_below="@id/recycler"
+        android:layout_centerInParent="true"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_marginTop="30sp"
+         android:visibility="gone"
+        android:id="@+id/txtEmpty"
+        />
+
     <ProgressBar
         android:id="@+id/paginationProgressBar"
         style="?attr/progressBarStyle"

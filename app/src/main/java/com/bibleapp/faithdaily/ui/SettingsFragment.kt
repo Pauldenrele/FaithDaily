@@ -11,7 +11,6 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bibleapp.faithdaily.R
 import com.bibleapp.faithdaily.ReminderBroadCast
@@ -37,7 +36,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             if (isChecked) {
                 createNotificationChannel()
 
-                Toast.makeText(context, "Item Two Clicked", Toast.LENGTH_LONG).show()
                 val editor: SharedPreferences.Editor =
                     context!!.getSharedPreferences("switchstate", MODE_PRIVATE).edit()
                 editor.putBoolean("saveSwitchState", true)
@@ -53,7 +51,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
                 val timeAtBtnClick = System.currentTimeMillis()
 
-                val timeSecinMillis = 1000 * 60 *60 * 10.toLong()
+                val timeSecinMillis = 1000 * 10.toLong()
 
                 alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
@@ -66,14 +64,34 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
    */
             } else if (!isChecked) {
                 val editor: SharedPreferences.Editor =
-                    context!!.getSharedPreferences("switchstate", MODE_PRIVATE).edit()
+                    activity!!.getSharedPreferences("switchstate", MODE_PRIVATE).edit()
                 editor.putBoolean("saveSwitchState", false)
                 editor.apply()
 
-             //   Toast.makeText(context , "OFFFF" , Toast.LENGTH_SHORT).show()
+
+                val intent1 = Intent(context, ReminderBroadCast::class.java)
+
+                val pendingIntent = PendingIntent.getBroadcast(context, 0, intent1, 0)
+
+
+                val alarmManager =
+                    context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+
+                alarmManager.cancel(pendingIntent)
+
+                cancelNotification(activity!!, 200)
 
             }
         }
+    }
+
+
+    fun cancelNotification(ctx: Context, notifyId: Int) {
+        val ns = Context.NOTIFICATION_SERVICE
+        val nMgr = ctx.getSystemService(ns) as NotificationManager
+        // nMgr.cancel(notifyId)
+        nMgr.cancelAll()
     }
 
     private fun createNotificationChannel() {

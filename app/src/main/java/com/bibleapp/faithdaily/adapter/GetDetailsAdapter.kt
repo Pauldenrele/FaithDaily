@@ -11,6 +11,9 @@ import kotlinx.android.synthetic.main.item_preview.view.*
 class GetDetailsAdapter (private var listOfPosts: List<FaithDailyResponse>):
     RecyclerView.Adapter<GetDetailsAdapter.GetDetailsViewHolder>() {
 
+    private val limit = 10
+
+
     inner class GetDetailsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         fun bind (faithdaily: FaithDailyResponse){
@@ -48,7 +51,13 @@ class GetDetailsAdapter (private var listOfPosts: List<FaithDailyResponse>):
     }
 
     override fun getItemCount(): Int {
-        return listOfPosts.size
+        if(listOfPosts.size > limit){
+            return limit
+        }
+        else{
+            return listOfPosts.size
+        }
+
     }
 }
 

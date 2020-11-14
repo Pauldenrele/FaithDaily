@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
@@ -38,6 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var imageModelArrayList: ArrayList<ImageModel>? = null
     private var adapter: ImageAdapter? = null
 
+
     private val myImageList = intArrayOf(
         R.drawable.prayerlanguage,
         R.drawable.worship,
@@ -55,11 +57,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModel
+       //txtEmpty.text = view.findViewById(R.id.action_HomeFragment_to_calenderFragment);
 
 
 
         viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
             setupRecyclerView(articles)
+            if(postAdapter!!.itemCount == 0){
+                Toast.makeText(context , "Its Empty" , Toast.LENGTH_LONG).show()
+                txtEmpty.visibility = View.VISIBLE
+              //  rvDetailsSaved.visibility = View.INVISIBLE
+                txtEmpty.setOnClickListener {
+                  //  Navigation.findNavController(view).navigate(R.id.);
+
+                }
+            }
 
             postAdapter.setOnItemClickListener {
                 val intent = Intent(context, DetailsActivity::class.java)

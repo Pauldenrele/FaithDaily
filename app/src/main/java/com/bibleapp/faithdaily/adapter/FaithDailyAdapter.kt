@@ -4,20 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.R
+import com.bibleapp.faithdaily.model.FaithDailyResponse
 import kotlinx.android.synthetic.main.item_preview.view.*
 
 
-
-
-
-class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>):
+class FaithDailyAdapter(private var listOfPosts: List<FaithDailyResponse>):
     RecyclerView.Adapter<FaithDailyAdapter.FaithDailyViewHolder>() {
+
 
     inner class FaithDailyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        fun bind (faithdaily: FaithDailyResponse){
+        fun bind(faithdaily: FaithDailyResponse){
             itemView.apply {
                /* tvDate.text = faithdaily.date
                */ tvTitle.text = faithdaily.title
@@ -48,6 +46,7 @@ class FaithDailyAdapter (private var listOfPosts: List<FaithDailyResponse>):
 
     override fun onBindViewHolder(holder: FaithDailyViewHolder, position: Int) {
         val faithdaily = listOfPosts[position]
+
         holder.bind(faithdaily)
     }
 

@@ -1,10 +1,13 @@
 package com.bibleapp.faithdaily.adapter
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bibleapp.faithdaily.R
 import com.bibleapp.faithdaily.model.FaithDailyResponse
@@ -14,7 +17,10 @@ class FavoriteAdapter(private var listOfPosts: MutableList<FaithDailyResponse>) 
     RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
 
+
+
     inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
 
         fun bind(faithdaily: FaithDailyResponse) {
             itemView.apply {
@@ -23,11 +29,43 @@ class FavoriteAdapter(private var listOfPosts: MutableList<FaithDailyResponse>) 
                 tvDescription.text = faithdaily.daily_message
                 tvVerse.text = faithdaily.bible_verse
                 setOnClickListener {
-                    onItemClickListener?.let { it(faithdaily) }
+                   onItemClickListener?.let { it(faithdaily) }
+                }
+
+                setOnLongClickListener {
+                    longListener.let { it?.invoke(faithdaily) }
+                     true
                 }
 
             }
         }
+
+
+      /*  val builder = AlertDialog.Builder(view.context)
+
+        builder.setTitle("Androidly Alert")
+        builder.setMessage("We have a message")
+
+
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            Toast.makeText(view.context,
+                android.R.string.yes, Toast.LENGTH_SHORT).show()
+
+
+        }
+*/
+
+
+
+    }
+
+
+
+
+    private var longListener: ((FaithDailyResponse) -> Unit)? = null
+
+    fun setLongListener(longlistener: (FaithDailyResponse) -> Unit) {
+       longListener = longlistener
     }
 
 
@@ -58,6 +96,10 @@ class FavoriteAdapter(private var listOfPosts: MutableList<FaithDailyResponse>) 
         notifyItemRemoved(position)
     }
 
+   /*fun getNoteAt(position: Int): FaithDailyResponse {
+        return getItem(position)
+    }
+*/
 
     override fun getItemCount(): Int {
         return listOfPosts.size

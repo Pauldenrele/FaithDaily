@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20sp"
             android:layout_marginLeft="20sp"
-            android:layout_marginTop="20sp"
+            android:layout_marginTop="25sp"
             android:orientation="horizontal">
 
             <ImageView
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20sp"
             android:layout_marginLeft="20sp"
-            android:layout_marginTop="20sp"
+            android:layout_marginTop="30sp"
             android:orientation="horizontal">
 
             <ImageView
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20sp"
             android:layout_marginLeft="20sp"
-            android:layout_marginTop="20sp"
+            android:layout_marginTop="30sp"
             android:orientation="horizontal">
 
             <ImageView
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20sp"
             android:layout_marginLeft="20sp"
-            android:layout_marginTop="20sp"
+            android:layout_marginTop="30sp"
             android:orientation="horizontal">
 
             <ImageView
