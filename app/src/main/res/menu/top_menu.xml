@@ -9,8 +9,9 @@
         android:title="Item One"/>
     <item
         android:id="@+id/action_two"
+        android:icon="@drawable/ic_baseline_volume_up_24"
+
+        app:showAsAction="always"
         android:title="Item Two"/>
-    <item
-        android:id="@+id/action_three"
-        android:title="Item Three"/>
+
 </menu>

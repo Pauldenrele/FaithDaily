@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/fd180"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DetailsActivity"></activity>
+        <activity android:name=".ui.FavoriteDetailsActivity"></activity>
+        <activity android:name=".ui.DetailsActivity" />
         <activity android:name=".ui.WordActivity" />
         <activity
             android:name=".SplashScreen"
@@ -30,7 +31,7 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".ReminderBroadCast"></receiver>
+        <receiver android:name=".ReminderBroadCast" />
     </application>
 
 </manifest>

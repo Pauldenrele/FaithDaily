@@ -11,8 +11,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,8 @@ import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.util.SwipeToDeleteCallBack
 import com.bibleapp.faithdaily.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_favorite.*
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.item_preview.*
 
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
@@ -40,20 +44,28 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             setupRecyclerView(articles)
 
             if (postAdapter!!.itemCount == 0) {
-                Toast.makeText(context, "Its Empty", Toast.LENGTH_LONG).show()
+                txtEmptyFav.visibility = View.VISIBLE
             }
 
 
             postAdapter.setOnItemClickListener {
+                val intent = Intent(context, FavoriteDetailsActivity::class.java)
+                intent.putExtra("KeyFav", it.daily_message)
+                intent.putExtra("KeyTitleFav", it.title)
+                intent.putExtra("KeyVerseFav", it.bible_verse)
+
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    activity as MainActivity,
+                    (tvDescription as View?)!!, "profile"
+                )
+                startActivity(intent, options.toBundle())
 
 
-                //   delete(it)
             }
 
             postAdapter.setLongListener {
 
-
-                showDialog(it , it.daily_message)
+                showDialog(it, it.daily_message)
 
             }
 
@@ -80,7 +92,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     }
 
-    private fun showDialog(faithdaily: FaithDailyResponse , desc:String) {
+    private fun showDialog(faithdaily: FaithDailyResponse, desc: String) {
         val dialog = Dialog(context!!)
         //   dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -92,11 +104,11 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             dialog.dismiss()
         }
         share.setOnClickListener {
-            val intent= Intent()
-            intent.action=Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT,desc)
-            intent.type="text/plain"
-            startActivity(Intent.createChooser(intent,"Share To:"))
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, desc)
+            intent.type = "text/plain"
+            startActivity(Intent.createChooser(intent, "Share To:"))
 
             dialog.dismiss()
         }

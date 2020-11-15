@@ -11,9 +11,13 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
 
-        val getDateNum: String? = intent.getStringExtra("Key")
+        val getDetails: String? = intent.getStringExtra("Key")
+        val getTitle: String? = intent.getStringExtra("KeyTitle")
+        val getVerse: String? = intent.getStringExtra("KeyVerse")
 
-        tvDetails.text = getDateNum
+        tvDetails.text = getDetails
+        tvTitleHome.text = getTitle
+        tvVerseHome.text = getVerse
 
 
     }

@@ -25,11 +25,11 @@
         android:id="@+id/img_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/txtDay"
-        android:layout_marginTop="75sp"
-        android:src="@drawable/sun32px"
         android:layout_marginStart="10sp"
-        android:layout_toEndOf="@id/txtDay" />
+        android:layout_marginTop="75sp"
+        android:layout_toEndOf="@id/txtDay"
+        android:layout_toRightOf="@id/txtDay"
+        android:src="@drawable/sun32px" />
 
     <TextView
         android:id="@+id/txtDate"
@@ -62,18 +62,18 @@
         android:paddingBottom="50dp" />
 
     <TextView
+        android:id="@+id/txtEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pingfang"
-        android:text="Click here to \n start reading \n Daily Devotionals"
         android:layout_below="@id/recycler"
         android:layout_centerInParent="true"
-        android:textSize="25sp"
-        android:gravity="center"
         android:layout_marginTop="30sp"
-         android:visibility="gone"
-        android:id="@+id/txtEmpty"
-        />
+        android:fontFamily="@font/pingfang"
+        android:gravity="center"
+        android:padding="3sp"
+        android:text="Click here to \n start reading \n Daily Devotionals"
+        android:textSize="25sp"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/paginationProgressBar"

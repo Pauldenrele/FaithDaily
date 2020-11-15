@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bibleapp.faithdaily.MainActivity
@@ -57,18 +58,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModel
-       //txtEmpty.text = view.findViewById(R.id.action_HomeFragment_to_calenderFragment);
-
-
 
         viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
             setupRecyclerView(articles)
             if(postAdapter!!.itemCount == 0){
-                Toast.makeText(context , "Its Empty" , Toast.LENGTH_LONG).show()
                 txtEmpty.visibility = View.VISIBLE
-              //  rvDetailsSaved.visibility = View.INVISIBLE
                 txtEmpty.setOnClickListener {
-                  //  Navigation.findNavController(view).navigate(R.id.);
+                    Navigation.findNavController(view).navigate(R.id.action_HomeFragment_to_calenderFragment)
 
                 }
             }
@@ -76,6 +72,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             postAdapter.setOnItemClickListener {
                 val intent = Intent(context, DetailsActivity::class.java)
                 intent.putExtra("Key", it.daily_message)
+                intent.putExtra("KeyTitle", it.title)
+                intent.putExtra("KeyVerse", it.bible_verse)
+
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     activity as MainActivity,
                     (tvDescription as View?)!!, "profile"

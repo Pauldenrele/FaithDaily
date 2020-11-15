@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/tvVerseHome"
+        android:id="@+id/tvVerseFav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/underline"
@@ -18,7 +18,7 @@
         android:textColor="#4B3F3F" />
 
     <TextView
-        android:id="@+id/tvTitleHome"
+        android:id="@+id/tvTitleFav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -36,17 +36,17 @@
         android:id="@+id/underline"
         android:layout_width="140dp"
         android:layout_height="5sp"
-        android:layout_below="@id/tvTitleHome"
+        android:layout_below="@id/tvTitleFav"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
         android:src="@drawable/bkgrnd" />
 
 
     <TextView
-        android:id="@+id/tvDetails"
+        android:id="@+id/tvDetailsFav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvVerseHome"
+        android:layout_below="@id/tvVerseFav"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"

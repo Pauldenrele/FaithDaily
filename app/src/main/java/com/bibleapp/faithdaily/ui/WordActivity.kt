@@ -1,11 +1,17 @@
 package com.bibleapp.faithdaily.ui
 
+import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.speech.tts.TextToSpeech
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,19 +23,22 @@ import com.bibleapp.faithdaily.db.FaithDailyDatabase
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.repository.MainRepo
 import com.bibleapp.faithdaily.util.DataState
+import com.bibleapp.faithdaily.util.PreferenceUtils
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_word.*
+import java.util.*
 
 class WordActivity : AppCompatActivity() {
     lateinit var postAdapter: FaithDailyAdapter
     val TAG = "WordFragment"
 
+    lateinit var mTTS: TextToSpeech
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word)
         val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
-
-
         fab.setOnClickListener {
 
             val parentLayout = findViewById<View>(android.R.id.content)
@@ -148,37 +157,153 @@ class WordActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here.
+        val getDatNum: Int = intent.getIntExtra("keyIdentifier", 0)
+
+        val mainRepository = MainRepo(FaithDailyDatabase(this))
+
+        val viewModel: MainViewModel =
+            ViewModelProviders.of(
+                this,
+                MainViewModelProviderFactory(this.application, mainRepository)
+            )
+                .get(
+                    MainViewModel::class.java
+                )
+
 
         val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
         val parentLayout = findViewById<View>(android.R.id.content)
 
         val id = item.getItemId()
 
-        if (id == R.id.action_one) {
-            saveDetails(id = getDateNum)
+        return when (id) {
+            R.id.action_one -> {
+                saveDetails(id = getDateNum)
+                val snack =
+                    Snackbar.make(parentLayout, "Saved", Snackbar.LENGTH_LONG)
+                val snackbarView = snack.view
+                snackbarView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+                snack.show()
 
-            val snack =
-                Snackbar.make(parentLayout, "Saved", Snackbar.LENGTH_LONG)
-            val snackbarView = snack.view
-            snackbarView.setBackgroundColor(resources.getColor(R.color.colorAccent))
-            snack.show()
+                true
+            }
+            R.id.action_two -> {
+                val toSpeak = "My name is John"
+                if (toSpeak == "") {
+                    //if there is no text in edit text
+                    Toast.makeText(this, "Enter text", Toast.LENGTH_SHORT).show()
+                } else {
+
+                    viewModel.getFaithDail(getDatNum).observe(this, Observer {
+
+                        when (it) {
+                            is DataState.Success -> {
+                                mTTS = TextToSpeech(
+                                    applicationContext,
+                                    TextToSpeech.OnInitListener { status ->
 
 
-            return true
+                                        if (status != TextToSpeech.ERROR) {
+                                            //if there is no error then set language
+                                            mTTS.language = Locale.UK
+
+                                            mTTS.speak(
+                                                it.data.daily_message,
+                                                TextToSpeech.QUEUE_FLUSH,
+                                                null
+                                            )
+
+                                        }
+                                    })
+
+                            }
+                            is DataState.Loading -> {
+                            }
+                            is DataState.Error -> {
+
+                            }
+                        }
+                    })
+
+                }
+
+
+                true
+
+            }
+            else -> super.onOptionsItemSelected(item)
+
         }
-        if (id == R.id.action_two) {
-            Toast.makeText(this, "Item Two Clicked", Toast.LENGTH_LONG).show()
-            return true
-        }
-        if (id == R.id.action_three) {
-            Toast.makeText(this, "Item Three Clicked", Toast.LENGTH_LONG).show()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
 
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        mTTS.shutdown()
+        mTTS.stop()
+        mTTS = TextToSpeech(
+            applicationContext,
+            TextToSpeech.OnInitListener { status ->
+
+
+                if (status != TextToSpeech.ERROR) {
+                    //if there is no error then set language
+                    mTTS.language = Locale.UK
+
+                    if (mTTS.isSpeaking) {
+                        //if speaking then stop
+                        mTTS.stop()
+                        mTTS.shutdown()
+                    }
+
+                }
+            })
+
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        mTTS.shutdown()
+        mTTS.stop()
+
+        mTTS = TextToSpeech(
+            applicationContext,
+            TextToSpeech.OnInitListener { status ->
+
+
+                if (status != TextToSpeech.ERROR) {
+                    //if there is no error then set language
+                    mTTS.language = Locale.UK
+
+                    if (mTTS.isSpeaking) {
+                        //if speaking then stop
+                        mTTS.stop()
+                        mTTS.shutdown()
+                    }
+
+                }
+            })
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mTTS.isSpeaking) {
+            //if speaking then stop
+            mTTS.stop()
+            //mTTS.shutdown()
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        val speech = menu.findItem(R.id.action_two)
+        return true
+    }
+
 
     private fun setupRecyclerView(
         response: List<FaithDailyResponse>
