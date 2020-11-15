@@ -240,8 +240,8 @@ class WordActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        mTTS.shutdown()
-        mTTS.stop()
+        //mTTS.shutdown()
+       // mTTS.stop()
         mTTS = TextToSpeech(
             applicationContext,
             TextToSpeech.OnInitListener { status ->
@@ -251,14 +251,16 @@ class WordActivity : AppCompatActivity() {
                     //if there is no error then set language
                     mTTS.language = Locale.UK
 
-                    if (mTTS.isSpeaking) {
                         //if speaking then stop
                         mTTS.stop()
                         mTTS.shutdown()
-                    }
+
 
                 }
             })
+
+        mTTS.stop()
+        mTTS.shutdown()
 
 
     }
@@ -266,8 +268,8 @@ class WordActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 
-        mTTS.shutdown()
-        mTTS.stop()
+        //mTTS.shutdown()
+        //mTTS.stop()
 
         mTTS = TextToSpeech(
             applicationContext,
@@ -278,24 +280,28 @@ class WordActivity : AppCompatActivity() {
                     //if there is no error then set language
                     mTTS.language = Locale.UK
 
-                    if (mTTS.isSpeaking) {
-                        //if speaking then stop
                         mTTS.stop()
                         mTTS.shutdown()
-                    }
+
 
                 }
             })
+
+        mTTS.stop()
+        mTTS.shutdown()
+
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
         if (mTTS.isSpeaking) {
             //if speaking then stop
             mTTS.stop()
             //mTTS.shutdown()
         }
+
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
