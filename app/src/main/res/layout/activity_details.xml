@@ -3,7 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+   >
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        >
 
 
     <TextView
@@ -56,6 +68,10 @@
         android:text="DESCRIPTION"
         android:textAlignment="textStart"
         android:textColor="#4B3F3F" />
+    </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
 
 
 

@@ -2,11 +2,9 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+  >
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -20,6 +18,18 @@
             android:layout_gravity="center"
             android:gravity="center_horizontal"
             >
+
+            <TextView
+                android:id="@+id/tvVerse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/underline"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pingfang"
+                android:text="Verse"
+                android:textColor="#4B3F3F" />
+
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -45,16 +55,6 @@
                 android:layout_marginTop="4dp"
                 android:src="@drawable/bkgrnd" />
 
-            <TextView
-                android:id="@+id/tvVerse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/underline"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/pingfang"
-                android:text="Verse"
-                android:textColor="#4B3F3F" />
 
 
 
