@@ -1,44 +1,53 @@
 package com.bibleapp.faithdaily.ui
 
-import android.content.SharedPreferences
+import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.speech.tts.TextToSpeech
-import android.text.Html
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bibleapp.faithdaily.viewmodel.MainViewModel
-import com.bibleapp.faithdaily.viewmodel.MainViewModelProviderFactory
 import com.bibleapp.faithdaily.R
 import com.bibleapp.faithdaily.adapter.FaithDailyAdapter
 import com.bibleapp.faithdaily.db.FaithDailyDatabase
-import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.repository.MainRepo
 import com.bibleapp.faithdaily.util.DataState
-import com.bibleapp.faithdaily.util.PreferenceUtils
+import com.bibleapp.faithdaily.viewmodel.MainViewModel
+import com.bibleapp.faithdaily.viewmodel.MainViewModelProviderFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_word.*
 import java.util.*
 
+
 class WordActivity : AppCompatActivity() {
+    //  lateinit var postAdapter: FaithDailyAdapter
+
     lateinit var postAdapter: FaithDailyAdapter
     val TAG = "WordFragment"
 
     lateinit var mTTS: TextToSpeech
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_word)
         val getDateNum: Int = intent.getIntExtra("keyIdentifier", 0)
+
+
+        myScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            //Do something
+         //   Toast.makeText(this ,"scrollX_" + scrollX + "_scrollY_" + scrollY + "_oldScrollX_" + oldScrollX + "_oldScrollY_" + oldScrollY, Toast.LENGTH_LONG ).show()
+        })
+
+/*
         fab.setOnClickListener {
 
             val parentLayout = findViewById<View>(android.R.id.content)
@@ -50,9 +59,9 @@ class WordActivity : AppCompatActivity() {
             snack.show()
 
 
-
             saveDetails(id = getDateNum)
         }
+*/
 
 
         getBibleDetails(getDateNum)
@@ -60,6 +69,7 @@ class WordActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun getBibleDetails(day: Int) {
 
         val mainRepository = MainRepo(FaithDailyDatabase(this))
@@ -77,7 +87,15 @@ class WordActivity : AppCompatActivity() {
 
             when (it) {
                 is DataState.Success -> {
-                    setupRecyclerView(listOf(it.data))
+                    Title.text = it.data.title
+                    Verse.text = it.data.bible_verse
+                    wordDesc.text = "${it.data.daily_message}"
+                    wordDesc.breakStrategy = LineBreaker.BREAK_STRATEGY_SIMPLE
+                  //  wordDesc.setLineSpacing(-1.0f , -0.5f)
+
+                    underlineWord.visibility = View.VISIBLE
+                    // Toast.makeText(this , "Verse ${it.data.bible_verse}" , Toast.LENGTH_LONG).show()
+                    //  setupRecyclerView(listOf(it.data))
                     hideProgressBar()
                     hideRetryButton()
                 }
@@ -123,6 +141,7 @@ class WordActivity : AppCompatActivity() {
         retryButton.visibility = View.INVISIBLE
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun showRetryButton(day: Int) {
         val parentLayout = findViewById<View>(android.R.id.content)
 
@@ -187,50 +206,6 @@ class WordActivity : AppCompatActivity() {
 
                 true
             }
-            R.id.action_two -> {
-                val toSpeak = "My name is John"
-                if (toSpeak == "") {
-                    //if there is no text in edit text
-                    Toast.makeText(this, "Enter text", Toast.LENGTH_SHORT).show()
-                } else {
-
-                    viewModel.getFaithDail(getDatNum).observe(this, Observer {
-
-                        when (it) {
-                            is DataState.Success -> {
-                                mTTS = TextToSpeech(
-                                    applicationContext,
-                                    TextToSpeech.OnInitListener { status ->
-
-
-                                        if (status != TextToSpeech.ERROR) {
-                                            //if there is no error then set language
-                                            mTTS.language = Locale.UK
-
-                                            mTTS.speak(
-                                                it.data.daily_message,
-                                                TextToSpeech.QUEUE_FLUSH,
-                                                null
-                                            )
-
-                                        }
-                                    })
-
-                            }
-                            is DataState.Loading -> {
-                            }
-                            is DataState.Error -> {
-
-                            }
-                        }
-                    })
-
-                }
-
-
-                true
-
-            }
             else -> super.onOptionsItemSelected(item)
 
         }
@@ -240,8 +215,6 @@ class WordActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        //mTTS.shutdown()
-       // mTTS.stop()
         mTTS = TextToSpeech(
             applicationContext,
             TextToSpeech.OnInitListener { status ->
@@ -249,11 +222,11 @@ class WordActivity : AppCompatActivity() {
 
                 if (status != TextToSpeech.ERROR) {
                     //if there is no error then set language
-                    mTTS.language = Locale.UK
+                    mTTS.language = Locale.ENGLISH
 
-                        //if speaking then stop
-                        mTTS.stop()
-                        mTTS.shutdown()
+                    //if speaking then stop
+                    mTTS.stop()
+                    mTTS.shutdown()
 
 
                 }
@@ -268,8 +241,6 @@ class WordActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 
-        //mTTS.shutdown()
-        //mTTS.stop()
 
         mTTS = TextToSpeech(
             applicationContext,
@@ -280,8 +251,8 @@ class WordActivity : AppCompatActivity() {
                     //if there is no error then set language
                     mTTS.language = Locale.UK
 
-                        mTTS.stop()
-                        mTTS.shutdown()
+                    mTTS.stop()
+                    mTTS.shutdown()
 
 
                 }
@@ -311,7 +282,7 @@ class WordActivity : AppCompatActivity() {
     }
 
 
-    private fun setupRecyclerView(
+  /*  private fun setupRecyclerView(
         response: List<FaithDailyResponse>
     ) {
         postAdapter = FaithDailyAdapter(response)
@@ -324,6 +295,6 @@ class WordActivity : AppCompatActivity() {
         }
         postAdapter.notifyDataSetChanged()
     }
-
+*/
 
 }

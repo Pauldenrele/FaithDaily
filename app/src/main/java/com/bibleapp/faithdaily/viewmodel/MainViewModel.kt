@@ -24,6 +24,14 @@ class MainViewModel(
         return mainRepository.getFaithDaily(day).asLiveData()
     }
 
+
+
+
+    fun getFaithDai(day:Int) = liveData{
+        emit(mainRepository.getFaithDaily(day).asLiveData())
+    }
+
+
     fun saveArticle(article: FaithDailyResponse) = viewModelScope.launch {
         mainRepository.upsert(article)
     }

@@ -77,8 +77,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_android_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_android_version"
 
-//CalendarView
+    //CalendarView
     implementation 'com.github.kizitonwose:CalendarView:0.4.5'
+
+    //ViewPager
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
 
     //Room

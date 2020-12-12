@@ -11,7 +11,7 @@ import com.bibleapp.faithdaily.model.ImageModel
 import com.bibleapp.faithdaily.R
 import java.util.*
 
-class ImageAdapter(ctx: Context?, imageModelArrayList: ArrayList<ImageModel>) :
+ class ImageAdapter(ctx: Context?, imageModelArrayList: ArrayList<ImageModel>) :
     RecyclerView.Adapter<ImageAdapter.MyViewHolder?>() {
     private val inflater: LayoutInflater
     private val imageModelArrayList: ArrayList<ImageModel>
@@ -21,6 +21,7 @@ class ImageAdapter(ctx: Context?, imageModelArrayList: ArrayList<ImageModel>) :
         holder.iv.setImageResource(imageModelArrayList[position].image_drawable)
         holder.time.setText(imageModelArrayList[position].name)
     }
+
 
 
     inner class MyViewHolder(itemView: View) :

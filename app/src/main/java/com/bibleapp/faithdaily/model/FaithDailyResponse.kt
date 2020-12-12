@@ -17,7 +17,6 @@ data class FaithDailyResponse(
     val date: String,
     @SerializedName("isFav")
     val isFav: Boolean,
-
     @SerializedName("day")
     @PrimaryKey
     val day: Int,

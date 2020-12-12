@@ -20,7 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CustomVerticalCalenderViewJava extends LinearLayout implements VerticalAdapterJava.DateSelectionListener {
+public class CustomVerticalCalenderViewJava extends LinearLayout implements
+        VerticalAdapterJava.DateSelectionListener {
     private static final int DAYS_COUNT = 42;
     private static final String TAG = CustomVerticalCalenderViewJava.class.getSimpleName();
     private static int mDateSelectionColor;
@@ -117,7 +118,7 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
         if (!isInEditMode()) {
             currentDate = Calendar.getInstance();
             LinkedHashMap<String, List<Date>> verticalList = new LinkedHashMap<>();
-            currentDate.add(Calendar.MONTH, -lastNoOfMonth);// reset to last no of month
+            currentDate.add(Calendar.MONTH, - lastNoOfMonth + 6);// reset to last no of month
             for (int i = 0; i <= lastNoOfMonth; i++) {
                 ArrayList<Date> cells = getDatesForMonth();
                 int month = currentDate.get(Calendar.MONTH);
@@ -131,6 +132,26 @@ public class CustomVerticalCalenderViewJava extends LinearLayout implements Vert
             updateAdater(verticalList);
         }
     }
+
+    public void updateCalendarMonth() {
+        if (!isInEditMode()) {
+            currentDate = Calendar.getInstance();
+            LinkedHashMap<String, List<Date>> verticalList = new LinkedHashMap<>();
+            //currentDate.add(Calendar.MONTH, -lastNoOfMonth + 2);// reset to last no of month
+            for (int i = 0; i <= Calendar.YEAR; i++) {
+                ArrayList<Date> cells = getDatesForMonth();
+                int month = currentDate.get(Calendar.MONTH);
+                int year = currentDate.get(Calendar.YEAR);
+                String key = generateKey(month, year);
+                Log.d(TAG, key);
+                verticalList.put(key, cells);
+                currentDate.add(Calendar.MONTH, 1);
+            }
+
+            updateAdater(verticalList);
+        }
+    }
+
 
     public void setDateSelectionColor(int color) {
         mDateSelectionColor = color;

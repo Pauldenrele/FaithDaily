@@ -21,6 +21,27 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+
+        About.setOnClickListener {
+            val intent = Intent(context, AboutActivity::class.java)
+            startActivity(intent)
+        }
+
+        Help.setOnClickListener {
+            val intent = Intent(context, HelpActivity::class.java)
+            startActivity(intent)
+        }
+
+        share.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, "https://.......com")
+            intent.type = "text/plain"
+            startActivity(Intent.createChooser(intent, "Share To:"))
+
+
+        }
+
         val sharedPrefs: SharedPreferences = context!!.getSharedPreferences(
             "switchstate",
             MODE_PRIVATE

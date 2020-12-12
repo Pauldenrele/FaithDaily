@@ -1,44 +1,59 @@
 package com.bibleapp.faithdaily.ui
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.AbsListView
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bibleapp.faithdaily.MainActivity
 import com.bibleapp.faithdaily.R
 import com.bibleapp.faithdaily.adapter.GetDetailsAdapter
-import com.bibleapp.faithdaily.adapter.ImageAdapter
+import com.bibleapp.faithdaily.adapter.ScrollCustomAdapter
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.model.ImageModel
-import com.bibleapp.faithdaily.util.Constants.Companion.QUERY_PAGE_SIZE
+import com.bibleapp.faithdaily.util.DataState
 import com.bibleapp.faithdaily.util.generateList
 import com.bibleapp.faithdaily.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_word.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.paginationProgressBar
-import kotlinx.android.synthetic.main.item_preview.*
 import java.time.LocalDate
 import java.util.*
-
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     lateinit var viewModel: MainViewModel
     lateinit var postAdapter: GetDetailsAdapter
+    private lateinit var adapter: ScrollCustomAdapter
 
+    lateinit var viewPager: ViewPager2
+    //lateinit var postAdapter: FaithDailyAdapter
+
+    //    abstract val compositePageTransformer: CompositePageTransformer
     val TAG = "HomeFragment"
 
     private var imageModelArrayList: ArrayList<ImageModel>? = null
-    private var adapter: ImageAdapter? = null
+    // private var adapter: ImageAdapter? = null
+    //handle scroll count
+
+    var scrollCount: Int = 0
+
+    private lateinit var layoutManager: LinearLayoutManager
+
+    //handler for run auto scroll thread
+    internal val handler = Handler()
+    val displayMetrics = DisplayMetrics()
 
 
     private val myImageList = intArrayOf(
@@ -53,18 +68,242 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val myImageNameList =
         arrayOf("Apple", "Mango", "Strawberry", "Pineapple", "Orange", "Blueberry", "Watermelon")
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModel
+        val calendar = Calendar.getInstance()
+        val dayofYear = calendar[Calendar.DAY_OF_YEAR]
 
-        viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
+
+        val currentday = LocalDate.now()
+        val dayofwEEK = currentday.dayOfWeek
+
+        viewModel.getFaithDai(dayofYear - 1).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        card_today.visibility = View.VISIBLE
+                        yesterdayTitle.text = it.data.title
+                        yesterdayVerse.text = it.data.bible_verse
+                        yesterdayDescription.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+        viewModel.getFaithDai(dayofYear).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+
+                        card_view_yest.visibility = View.VISIBLE
+                        //    Toast.makeText(activity , "${it.data.title}" , Toast.LENGTH_LONG).show()
+                        todayTitle.text = it.data.title
+                        todayVerse.text = it.data.bible_verse
+                        todayDesc.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+
+        viewModel.getFaithDai(dayofYear - 2).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        card_day1.visibility = View.VISIBLE
+                        Day1day.text = "${dayofwEEK - 2}"
+                        Day1Title.text = it.data.title
+                        Day1Verse.text = it.data.bible_verse
+                        Day1Description.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+
+        viewModel.getFaithDai(dayofYear - 3).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        card_view_day2.visibility = View.VISIBLE
+                        Day2day.text = "${dayofwEEK - 3}"
+                        Day2Title.text = it.data.title
+                        Day2Verse.text = it.data.bible_verse
+                        Day2Description.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+
+        viewModel.getFaithDai(dayofYear - 4).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        card_view_day3.visibility = View.VISIBLE
+                        Day3day.text = "${dayofwEEK - 4}"
+                        Day3Title.text = it.data.title
+                        Day3Verse.text = it.data.bible_verse
+                        Day3Description.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+
+        viewModel.getFaithDai(dayofYear - 5).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        card_view_day4.visibility = View.VISIBLE
+                        Day4day.text = "${dayofwEEK - 5}"
+                        Day4Title.text = it.data.title
+                        Day4Verse.text = it.data.bible_verse
+                        Day4Description.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+        viewModel.getFaithDai(dayofYear - 6).observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        card_view_day5.visibility = View.VISIBLE
+                        Day5day.text = "${dayofwEEK - 6}"
+                        Day5Title.text = it.data.title
+                        Day5Verse.text = it.data.bible_verse
+                        Day5Description.text = it.data.daily_message
+                        hideProgressBar()
+                        //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+
+            })
+        })
+
+
+/*
+        for ( i in 1..3 ){
+            count +=1
+            val day = i + count
+
+            viewModel.getFaithDail(day).observe(viewLifecycleOwner, Observer {
+
+                when (it) {
+                    is DataState.Success -> {
+                        setupRecyclerView(listOf(it.data))
+                        hideProgressBar()
+                      //  hideRetryButton()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+
+                    }
+                }
+            })
+
+        }
+*/
+
+
+        /*viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
             setupRecyclerView(articles)
-            if(postAdapter!!.itemCount == 0){
+            if (postAdapter!!.itemCount == 0) {
                 txtEmpty.visibility = View.VISIBLE
                 txtEmpty.setOnClickListener {
-                    Navigation.findNavController(view).navigate(R.id.action_HomeFragment_to_calenderFragment)
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_HomeFragment_to_calenderFragment)
 
                 }
             }
@@ -82,26 +321,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 startActivity(intent, options.toBundle())
 
             }
-        })
+        })*/
 
         //   getBibleDetails()
 
         imageModelArrayList = eatFruits()
-        adapter = imageModelArrayList?.let { ImageAdapter(activity, it) }
-        recycler.setAdapter(adapter)
+        initLayoutManager()
+        // adapter = imageModelArrayList?.let { ImageAdapter(activity, it) }
+
+        /*recycler.setAdapter(adapter)
         recycler.setLayoutManager(
             LinearLayoutManager(
                 activity,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
-        )
+        )*/
 
         setupDate()
 
     }
-
-
 
 
     private fun hideProgressBar() {
@@ -116,12 +355,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun showRetryButton() {
 
-      //  retryButton.visibility = View.VISIBLE
-     /*   retryButton.setOnClickListener {
-            getBibleDetails()
-            isLoading = true
+        //  retryButton.visibility = View.VISIBLE
+        /*   retryButton.setOnClickListener {
+               getBibleDetails()
+               isLoading = true
 
-        }*/
+           }*/
     }
 
     private fun showProgressBar() {
@@ -131,45 +370,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
 
-
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
 
-    val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-
-            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
-            val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
-                    isTotalMoreThanVisible && isScrolling
-            if (shouldPaginate) {
-             //   viewModel.getDailyHome()
-                isScrolling = false
-            }
-        }
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                isScrolling = true
-            }
-        }
-    }
 
     private fun setupRecyclerView(
         response: List<FaithDailyResponse>
     ) {
         val randlist = generateList()
         postAdapter = GetDetailsAdapter(response)
+
+        // postAdapter = FaithDailyAdapter(response)
 
 
         rvDetailsSaved.apply {
@@ -181,7 +393,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         postAdapter.notifyDataSetChanged()
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -206,21 +417,76 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val current = LocalDate.now()
         txtDate.text = "${
-            current.dayOfWeek.toString().substring(0, 1).toUpperCase() +
-                    current.dayOfWeek.toString().substring(1).toLowerCase()
+        current.dayOfWeek.toString().substring(0, 1).toUpperCase() +
+                current.dayOfWeek.toString().substring(1).toLowerCase()
         } ,${current.dayOfMonth} ${
-            current.month.toString().substring(0, 1).toUpperCase() +
-                    current.month.toString().substring(1).toLowerCase()
+        current.month.toString().substring(0, 1).toUpperCase() +
+                current.month.toString().substring(1).toLowerCase()
         }"
 
 
     }
+
+    private fun initLayoutManager() {
+
+        layoutManager = object : LinearLayoutManager(context) {
+            override fun smoothScrollToPosition(
+                recyclerView: RecyclerView,
+                state: RecyclerView.State?,
+                position: Int
+            ) {
+                val smoothScroller = object : LinearSmoothScroller(context) {
+                    override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
+                        return 5.0f;
+                    }
+                }
+                smoothScroller.targetPosition = position
+                startSmoothScroll(smoothScroller)
+            }
+        }
+        adapter = object : ScrollCustomAdapter(context!!, imageModelArrayList!!) {
+            override fun load() {
+                if (layoutManager.findFirstVisibleItemPosition() > 1) {
+                    adapter.notifyItemMoved(0, imageModelArrayList!!.size - 1)
+                }
+            }
+        }
+
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recycler.layoutManager = layoutManager
+        recycler.setHasFixedSize(true)
+        recycler.setItemViewCacheSize(10)
+        recycler.isDrawingCacheEnabled = true
+        recycler.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_LOW
+        recycler.adapter = adapter
+        autoScroll()
+    }
+
+
+    private fun autoScroll() {
+        scrollCount = 0;
+        var speedScroll: Long = 1200;
+        val runnable = object : Runnable {
+            override fun run() {
+                if (layoutManager.findFirstVisibleItemPosition() >= imageModelArrayList!!.size / 2) {
+                    adapter.load()
+                    Log.e(TAG, "run: load $scrollCount")
+                }
+                //  recycler.smoothScrollToPosition(scrollCount++)
+                Log.e(TAG, "run: $scrollCount")
+                handler.postDelayed(this, speedScroll)
+            }
+        }
+        handler.postDelayed(runnable, speedScroll)
+    }
+
+
     private fun eatFruits(): ArrayList<ImageModel>? {
         val list: ArrayList<ImageModel> = ArrayList<ImageModel>()
         for (i in 0..6) {
             val fruitModel = ImageModel()
             fruitModel.name = myImageNameList[i]
-            fruitModel.image_drawable=myImageList[i]
+            fruitModel.image_drawable = myImageList[i]
             list.add(fruitModel)
         }
         return list
@@ -228,6 +494,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
-       // getBibleDetails()
+        // getBibleDetails()
     }
 }

@@ -8,9 +8,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,16 +32,15 @@
                 android:fontFamily="@font/pingfang"
                 android:text="Notifications"
 
-                android:textSize="20sp"
                 android:textColor="#000000"
-                />
+                android:textSize="20sp" />
 
             <Switch
                 android:id="@+id/switch_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="150sp"
-                android:layout_marginLeft="150sp"
+                android:layout_marginStart="130sp"
+                android:layout_marginLeft="130sp"
                 android:shadowColor="@color/colorPrimary" />
 
 
@@ -54,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20sp"
             android:layout_marginLeft="20sp"
+
             android:layout_marginTop="30sp"
             android:orientation="horizontal">
 
@@ -62,21 +60,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10sp"
 
-                android:src="@drawable/ic_baseline_info_24"
-                android:layout_marginRight="10sp" />
+                android:layout_marginRight="10sp"
+                android:src="@drawable/ic_baseline_info_24" />
 
             <TextView
+                android:id="@+id/About"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:fontFamily="@font/pingfang"
                 android:text="About"
 
-                android:textSize="20sp"
                 android:textColor="#000000"
-                />
-
-
+                android:textSize="20sp" />
 
 
         </LinearLayout>
@@ -94,21 +90,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10sp"
 
-                android:src="@drawable/ic_baseline_help_24"
-                android:layout_marginRight="10sp" />
+                android:layout_marginRight="10sp"
+                android:src="@drawable/ic_baseline_help_24" />
 
             <TextView
+                android:id="@+id/Help"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:fontFamily="@font/pingfang"
                 android:text="Help"
-
-                android:textSize="20sp"
                 android:textColor="#000000"
-                />
-
-
+                android:textSize="20sp" />
 
 
         </LinearLayout>
@@ -126,20 +119,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10sp"
 
-                android:src="@drawable/ic_baseline_share_24"
-                android:layout_marginRight="10sp" />
+                android:layout_marginRight="10sp"
+                android:src="@drawable/ic_baseline_share_24" />
 
             <TextView
+                android:id="@+id/share"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:fontFamily="@font/pingfang"
                 android:text="Share"
-                android:textSize="20sp"
                 android:textColor="#000000"
-                />
-
-
+                android:textSize="20sp" />
 
 
         </LinearLayout>

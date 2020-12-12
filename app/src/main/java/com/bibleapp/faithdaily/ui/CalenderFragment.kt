@@ -21,7 +21,7 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
         super.onViewCreated(view, savedInstanceState)
 
 
-        custom_calender_view.updateCalendar(4)
+        custom_calender_view.updateCalendar(6)
         custom_calender_view.setDateSelectionColor(
             ContextCompat.getColor(
                 context!!,
@@ -29,7 +29,6 @@ class CalenderFragment : Fragment(R.layout.fragment_calender),
             )
         )
         custom_calender_view.setListener(this)
-
 
     }
 
