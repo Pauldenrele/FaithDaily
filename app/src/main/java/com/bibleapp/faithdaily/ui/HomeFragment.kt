@@ -57,16 +57,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     private val myImageList = intArrayOf(
-        R.drawable.prayerlanguage,
-        R.drawable.worship,
-        R.drawable.praying,
-        R.drawable.worship,
-        R.drawable.prayerlanguage,
-        R.drawable.praying,
-        R.drawable.worship
+        R.drawable.image1,
+        R.drawable.faith_speak,
+        R.drawable.faith_acts,
+        R.drawable.faith_changes_situation,
+        R.drawable.faith_honours_god,
+        R.drawable.faith_pleases_god,
+        R.drawable.faith_rejoices,
+        R.drawable.faith_uplifts,
+        R.drawable.faith_is_powerful,
+        R.drawable.faith_builds,
+        R.drawable.faith_is_patient
     )
     private val myImageNameList =
-        arrayOf("Apple", "Mango", "Strawberry", "Pineapple", "Orange", "Blueberry", "Watermelon")
+        arrayOf(
+            "Faith Overcomes",
+            "Faith Speaks",
+            "Faith Acts",
+            "Faith Changes Situation",
+            "Faith Honours God",
+            "Faith Pleases God",
+            "Faith Rejoices",
+            "Faith Uplifts",
+            "Faith is Powerful",
+            "Faith Builds",
+            "Faith is Patient"
+        )
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -80,6 +96,41 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val currentday = LocalDate.now()
         val dayofwEEK = currentday.dayOfWeek
+
+
+        viewModel.getFirebaseImage().observe(viewLifecycleOwner, Observer {
+            it.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is DataState.Success -> {
+                        Toast.makeText(
+                            context, "Image ${it.data}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is DataState.Loading -> {
+                        showProgressBar()
+                        //hideRetryButton()
+                        Toast.makeText(
+                            context, "Image load",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+                    is DataState.Error -> {
+                        hideProgressBar()
+                        //  showRetryButton(i)
+                        Toast.makeText(
+                            context, "Image error ${it.exception}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+
+                    }
+
+                }
+            })
+        })
+
 
         viewModel.getFaithDai(dayofYear - 1).observe(viewLifecycleOwner, Observer {
             it.observe(viewLifecycleOwner, Observer {
@@ -417,11 +468,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val current = LocalDate.now()
         txtDate.text = "${
-        current.dayOfWeek.toString().substring(0, 1).toUpperCase() +
-                current.dayOfWeek.toString().substring(1).toLowerCase()
+            current.dayOfWeek.toString().substring(0, 1).toUpperCase() +
+                    current.dayOfWeek.toString().substring(1).toLowerCase()
         } ,${current.dayOfMonth} ${
-        current.month.toString().substring(0, 1).toUpperCase() +
-                current.month.toString().substring(1).toLowerCase()
+            current.month.toString().substring(0, 1).toUpperCase() +
+                    current.month.toString().substring(1).toLowerCase()
         }"
 
 

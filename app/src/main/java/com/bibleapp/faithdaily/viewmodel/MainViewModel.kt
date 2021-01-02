@@ -25,6 +25,10 @@ class MainViewModel(
     }
 
 
+    fun getFirebaseImage() = liveData{
+        emit(mainRepository.getFirebaseDetails().asLiveData())
+    }
+
 
 
     fun getFaithDai(day:Int) = liveData{

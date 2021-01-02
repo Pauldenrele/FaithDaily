@@ -2,9 +2,11 @@ package com.bibleapp.faithdaily.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bibleapp.faithdaily.api.FirebaseRetrofitInstance
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.api.RetrofitInstance
 import com.bibleapp.faithdaily.db.FaithDailyDatabase
+import com.bibleapp.faithdaily.model.FirebaseImageResp
 import com.bibleapp.faithdaily.util.DataState
 import com.bibleapp.faithdaily.util.Resource
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,12 @@ class MainRepo(
 
 ) {
 
+
+
+    //firebase
+
+    suspend fun getFirebaseImage() =
+        RetrofitInstance.api.getImageResponse()
 
     //network
     suspend fun getDailyResp(day: Int) =
@@ -59,5 +67,21 @@ class MainRepo(
         emit(DataState.Error(null, "Failed to load"))
     }.flowOn(Dispatchers.IO)
 
+
+    fun getFirebaseDetails(): Flow<DataState<FirebaseImageResp>> = flow {
+        emit(DataState.Loading)
+
+            val result = FirebaseRetrofitInstance.api.getImageResponse()
+
+
+            if (result.isSuccessful) {
+                emit(DataState.Success(result.body()!!))
+            }
+
+
+    }.catch { e ->
+        Timber.e(e)
+        emit(DataState.Error(null, "Failed to load"))
+    }.flowOn(Dispatchers.IO)
 
 }
