@@ -1,5 +1,6 @@
 package com.bibleapp.faithdaily.ui
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,12 +24,17 @@ import com.bibleapp.faithdaily.adapter.GetDetailsAdapter
 import com.bibleapp.faithdaily.adapter.ScrollCustomAdapter
 import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.model.ImageModel
+import com.bibleapp.faithdaily.ui.HomeAcitvites.TodayActivity
+import com.bibleapp.faithdaily.ui.HomeAcitvites.YesterdayActivity
 import com.bibleapp.faithdaily.util.DataState
 import com.bibleapp.faithdaily.util.generateList
 import com.bibleapp.faithdaily.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_word.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.paginationProgressBar
+import kotlinx.android.synthetic.main.item_details.*
+import kotlinx.android.synthetic.main.item_preview.*
+import kotlinx.android.synthetic.main.item_preview.tvDescription
 import java.time.LocalDate
 import java.util.*
 
@@ -60,7 +67,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         R.drawable.image1,
         R.drawable.faith_speak,
         R.drawable.faith_acts,
-        R.drawable.faith_changes_situation,
+        R.drawable.faith_is_patient,
         R.drawable.faith_honours_god,
         R.drawable.faith_pleases_god,
         R.drawable.faith_rejoices,
@@ -102,27 +109,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             it.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     is DataState.Success -> {
-                        Toast.makeText(
-                            context, "Image ${it.data}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        //     showProgressBar()
                         //hideRetryButton()
-                        Toast.makeText(
-                            context, "Image load",
-                            Toast.LENGTH_SHORT
-                        ).show()
 
                     }
                     is DataState.Error -> {
-                        hideProgressBar()
+                        //    hideProgressBar()
                         //  showRetryButton(i)
-                        Toast.makeText(
-                            context, "Image error ${it.exception}",
-                            Toast.LENGTH_SHORT
-                        ).show()
 
 
                     }
@@ -136,10 +131,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             it.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     is DataState.Success -> {
-                        card_today.visibility = View.VISIBLE
+                        card_view_yest.visibility = View.VISIBLE
                         yesterdayTitle.text = it.data.title
                         yesterdayVerse.text = it.data.bible_verse
                         yesterdayDescription.text = it.data.daily_message
+
+                        card_view_yest.setOnClickListener {
+
+                            val intent = Intent(context, YesterdayActivity::class.java)
+                            intent.putExtra("yesterday", yesterdayDescription.text.toString())
+                            intent.putExtra("yesterdayTitle", yesterdayTitle.text.toString())
+                            intent.putExtra("yesterdayVerse", yesterdayVerse.text.toString())
+
+                            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                activity as MainActivity,
+                                (yesterdayDescription as View?)!!, "profile"
+                            )
+                            startActivity(intent, options.toBundle())
+
+                        }
+
                         hideProgressBar()
                         //  hideRetryButton()
                     }
@@ -162,16 +173,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 when (it) {
                     is DataState.Success -> {
 
-                        card_view_yest.visibility = View.VISIBLE
+                        card_today.visibility = View.VISIBLE
                         //    Toast.makeText(activity , "${it.data.title}" , Toast.LENGTH_LONG).show()
                         todayTitle.text = it.data.title
                         todayVerse.text = it.data.bible_verse
                         todayDesc.text = it.data.daily_message
+
+                        card_today.setOnClickListener {
+                            val intent = Intent(context, TodayActivity::class.java)
+                            intent.putExtra("today", todayDesc.text.toString())
+                            intent.putExtra("todayTitle", todayTitle.text.toString())
+                            intent.putExtra("todayVerse", todayVerse.text.toString())
+
+                            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                activity as MainActivity,
+                                (todayDesc as View?)!!, "profile"
+                            )
+                            startActivity(intent, options.toBundle())
+
+                        }
+
                         hideProgressBar()
                         //  hideRetryButton()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        //     showProgressBar()
                         //hideRetryButton()
                     }
                     is DataState.Error -> {
@@ -198,7 +224,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         //  hideRetryButton()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        //      showProgressBar()
                         //hideRetryButton()
                     }
                     is DataState.Error -> {
@@ -225,7 +251,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         //  hideRetryButton()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        //  showProgressBar()
                         //hideRetryButton()
                     }
                     is DataState.Error -> {
@@ -252,7 +278,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         //  hideRetryButton()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        // showProgressBar()
                         //hideRetryButton()
                     }
                     is DataState.Error -> {
@@ -279,7 +305,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         //  hideRetryButton()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        //   showProgressBar()
                         //hideRetryButton()
                     }
                     is DataState.Error -> {
@@ -305,7 +331,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         //  hideRetryButton()
                     }
                     is DataState.Loading -> {
-                        showProgressBar()
+                        //    showProgressBar()
                         //hideRetryButton()
                     }
                     is DataState.Error -> {

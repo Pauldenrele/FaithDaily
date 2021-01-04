@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/wordDesc"
             android:textColor="#000000"
+            android:fontFamily="@font/pingfang"
             android:layout_margin="20sp"
             android:layout_marginTop="10sp"
             android:textSize="20sp"

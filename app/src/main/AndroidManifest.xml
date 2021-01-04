@@ -13,7 +13,9 @@
         android:roundIcon="@drawable/fd180"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.HelpActivity"></activity>
+        <activity android:name=".ui.HomeAcitvites.YesterdayActivity"></activity>
+        <activity android:name=".ui.HomeAcitvites.TodayActivity" />
+        <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.FavoriteDetailsActivity" />
         <activity android:name=".ui.DetailsActivity" />
