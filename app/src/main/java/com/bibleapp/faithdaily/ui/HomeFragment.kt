@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityOptionsCompat
@@ -26,14 +24,13 @@ import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.model.ImageModel
 import com.bibleapp.faithdaily.ui.HomeAcitvites.TodayActivity
 import com.bibleapp.faithdaily.ui.HomeAcitvites.YesterdayActivity
+import com.bibleapp.faithdaily.ui.bottomsheet.FaithDailyBottomSheet
 import com.bibleapp.faithdaily.util.DataState
 import com.bibleapp.faithdaily.util.generateList
 import com.bibleapp.faithdaily.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_word.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.paginationProgressBar
-import kotlinx.android.synthetic.main.item_details.*
-import kotlinx.android.synthetic.main.item_preview.*
 import kotlinx.android.synthetic.main.item_preview.tvDescription
 import java.time.LocalDate
 import java.util.*
@@ -521,7 +518,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 startSmoothScroll(smoothScroller)
             }
         }
-        adapter = object : ScrollCustomAdapter(context!!, imageModelArrayList!!) {
+        adapter = object : ScrollCustomAdapter( imageModelArrayList!!, ::showBottomSheet) {
             override fun load() {
                 if (layoutManager.findFirstVisibleItemPosition() > 1) {
                     adapter.notifyItemMoved(0, imageModelArrayList!!.size - 1)
@@ -537,6 +534,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recycler.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_LOW
         recycler.adapter = adapter
         autoScroll()
+    }
+
+    private fun showBottomSheet(imageModel: ImageModel) {
+        val sheet  = FaithDailyBottomSheet.newInstance(imageModel)
+        sheet.show(parentFragmentManager, "BottomSheet")
     }
 
 
