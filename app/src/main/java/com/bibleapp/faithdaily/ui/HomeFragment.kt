@@ -57,8 +57,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     //handler for run auto scroll thread
     internal val handler = Handler()
-    val displayMetrics = DisplayMetrics()
-
 
     private val myImageList = intArrayOf(
         R.drawable.image1,
@@ -342,78 +340,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
 
 
-/*
-        for ( i in 1..3 ){
-            count +=1
-            val day = i + count
-
-            viewModel.getFaithDail(day).observe(viewLifecycleOwner, Observer {
-
-                when (it) {
-                    is DataState.Success -> {
-                        setupRecyclerView(listOf(it.data))
-                        hideProgressBar()
-                      //  hideRetryButton()
-                    }
-                    is DataState.Loading -> {
-                        showProgressBar()
-                        //hideRetryButton()
-                    }
-                    is DataState.Error -> {
-                        hideProgressBar()
-                        //  showRetryButton(i)
-
-                    }
-                }
-            })
-
-        }
-*/
-
-
-        /*viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
-            setupRecyclerView(articles)
-            if (postAdapter!!.itemCount == 0) {
-                txtEmpty.visibility = View.VISIBLE
-                txtEmpty.setOnClickListener {
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_HomeFragment_to_calenderFragment)
-
-                }
-            }
-
-            postAdapter.setOnItemClickListener {
-                val intent = Intent(context, DetailsActivity::class.java)
-                intent.putExtra("Key", it.daily_message)
-                intent.putExtra("KeyTitle", it.title)
-                intent.putExtra("KeyVerse", it.bible_verse)
-
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    activity as MainActivity,
-                    (tvDescription as View?)!!, "profile"
-                )
-                startActivity(intent, options.toBundle())
-
-            }
-        })*/
-
-        //   getBibleDetails()
-
         imageModelArrayList = eatFruits()
         initLayoutManager()
-        // adapter = imageModelArrayList?.let { ImageAdapter(activity, it) }
-
-        /*recycler.setAdapter(adapter)
-        recycler.setLayoutManager(
-            LinearLayoutManager(
-                activity,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-        )*/
-
         setupDate()
-
     }
 
 
@@ -423,19 +352,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
-    private fun hideRetryButton() {
-        retryButton.visibility = View.INVISIBLE
-    }
-
-    private fun showRetryButton() {
-
-        //  retryButton.visibility = View.VISIBLE
-        /*   retryButton.setOnClickListener {
-               getBibleDetails()
-               isLoading = true
-
-           }*/
-    }
 
     private fun showProgressBar() {
         paginationProgressBar.visibility = View.VISIBLE
@@ -445,28 +361,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     var isLoading = false
-    var isLastPage = false
-    var isScrolling = false
 
-
-    private fun setupRecyclerView(
-        response: List<FaithDailyResponse>
-    ) {
-        val randlist = generateList()
-        postAdapter = GetDetailsAdapter(response)
-
-        // postAdapter = FaithDailyAdapter(response)
-
-
-        rvDetailsSaved.apply {
-
-            adapter = postAdapter
-            layoutManager = LinearLayoutManager(context)
-            //  addOnScrollListener(this.scrollListener)
-
-        }
-        postAdapter.notifyDataSetChanged()
-    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -569,10 +464,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             list.add(fruitModel)
         }
         return list
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // getBibleDetails()
     }
 }

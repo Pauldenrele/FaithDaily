@@ -1,14 +1,11 @@
 package com.bibleapp.faithdaily.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.bibleapp.faithdaily.api.FirebaseRetrofitInstance
-import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.api.RetrofitInstance
 import com.bibleapp.faithdaily.db.FaithDailyDatabase
+import com.bibleapp.faithdaily.model.FaithDailyResponse
 import com.bibleapp.faithdaily.model.FirebaseImageResp
 import com.bibleapp.faithdaily.util.DataState
-import com.bibleapp.faithdaily.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,19 +19,9 @@ class MainRepo(
 ) {
 
 
-
-    //firebase
-
-    suspend fun getFirebaseImage() =
-        RetrofitInstance.api.getImageResponse()
-
-    //network
-    suspend fun getDailyResp(day: Int) =
-        RetrofitInstance.api.getDailyResponse(day)
-
     fun getFav() = db.getfaithdailyDao().getsavDetails()
 
-   suspend fun deleteFav(faithDaily: FaithDailyResponse) = db.getfaithdailyDao().delete(faithDaily)
+    suspend fun deleteFav(faithDaily: FaithDailyResponse) = db.getfaithdailyDao().delete(faithDaily)
     suspend fun addFav(id: Int) = db.getfaithdailyDao().setFavorite(id)
     suspend fun delFav(id: Int) = db.getfaithdailyDao().setFalseFavorite(id)
 
@@ -71,12 +58,12 @@ class MainRepo(
     fun getFirebaseDetails(): Flow<DataState<FirebaseImageResp>> = flow {
         emit(DataState.Loading)
 
-            val result = FirebaseRetrofitInstance.api.getImageResponse()
+        val result = FirebaseRetrofitInstance.api.getImageResponse()
 
 
-            if (result.isSuccessful) {
-                emit(DataState.Success(result.body()!!))
-            }
+        if (result.isSuccessful) {
+            emit(DataState.Success(result.body()!!))
+        }
 
 
     }.catch { e ->
